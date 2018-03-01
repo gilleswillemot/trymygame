@@ -5,7 +5,7 @@ let Hiscore = mongoose.model('Hiscore');
 let jwt = require('express-jwt');
 
 let auth = jwt({
-  secret: process.env.SECRET/*, userProperty: 'payload'*/
+  secret: process.env.SECRET, requestProperty: 'payload'
 });
 
 router.get('/API/hiscores/', function (req, res, next) {
@@ -70,6 +70,7 @@ router.get('/API/hiscore/:hiscoreId', function (req, res) {
 
 router.get('/API/bestHiscore/',/* auth,*/ function (req, res) {
   console.log("Searching for best hiscore...");
+  console.log(req.user.payload);
   // console.log(req.user); 
   // console.log(req.session.user);
   // console.log(req.session);

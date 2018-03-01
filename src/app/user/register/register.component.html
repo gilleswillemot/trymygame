@@ -14,15 +14,16 @@
             <div class='error' *ngIf=' user.get("email").errors?.required && user.get("email").touched'>
               Uw email is verplicht.
             </div>-->
-            <!--<div class='error' *ngIf='user.get("email").errors?.userAlreadyExists && user.get("email").touched'>
+        <!--<div class='error' *ngIf='user.get("email").errors?.userAlreadyExists && user.get("email").touched'>
               A user with that email already exists
             </div>-->
-          <!--</div>
+        <!--</div>
         </div> -->
 
-          <div class="form-group row mt-5">
-          <div class="col-3 offset-1">
-            <label  class="float-right">Username:</label>
+        <div class="form-group row mt-5">
+          
+          <div class="col-3 offset-2">
+            <label class="float-right">Username:</label>
           </div>
           <div class="col-4">
             <input class="form-control" formControlName='username'>
@@ -46,20 +47,21 @@
         </div> -->
         <div class="form-group" formGroupName='passwordGroup'>
           <div class="row">
-            <div class="col-3 offset-1">
+            <div class="col-3 offset-2">
               <label class="float-right">Wachtwoord:</label>
             </div>
             <div class="col-4">
               <input type="password" class="form-control" formControlName='password'>
               <div class='error' *ngIf='passwordControl.errors?.passwordTooShort && passwordControl.touched'>
-                Wachtwoord te kort, gelieve minstens {{passwordControl.errors?.passwordTooShort.requiredLength}} letters
-                te gebruiken (U heeft momenteel: {{passwordControl.errors?.passwordTooShort.actualLength}} letters)
+                Wachtwoord te kort, gelieve minstens {{passwordControl.errors?.passwordTooShort.requiredLength}} letters te gebruiken (U
+                heeft momenteel: {{passwordControl.errors?.passwordTooShort.actualLength}} letters)
               </div>
             </div>
           </div>
           <div class="row mt-3">
-            <div class="col-3 offset-1">
-              <label class="float-right">Bevestig<br> wachtwoord:</label>
+            <div class="col-1"></div>
+            <div class="col-4">
+              <label class="float-right">Bevestig wachtwoord:</label>
             </div>
             <div class="col-4">
               <input type="password" class="form-control" formControlName='confirmPassword'>
@@ -68,19 +70,17 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <div class="mt-5">
-          <button type='submit' [disabled]='!user.valid' class="btn btn-primary col-4 offset-4"><i class="fa fa-user-plus"></i>  Account aanmaken</button>
+          <button type='submit' [disabled]='!user.valid' class="btn btn-primary col-4 offset-4">
+            <i class="fa fa-user-plus"></i> Account aanmaken</button>
         </div>
       </form>
       <div class="text-center col-4 offset-4 mt-3">
-        <p>Heb je al een account? klik <a routerLink="/login">hier</a> om in te loggen.</p>
+        <p>Heb je al een account? klik
+          <a routerLink="/login">hier</a> om in te loggen.</p>
       </div>
     </div>
   </div>
 </div>
-
-
-
-

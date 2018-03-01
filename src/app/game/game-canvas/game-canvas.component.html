@@ -1,0 +1,60 @@
+<!-- <app-game-overlay (_restart)="restart()"
+[gameOverlay]="gameOverlay"
+></app-game-overlay> -->
+<!-- <div class="row offset-2">
+  <mat-menu #rootMenu="matMenu" md-position-mode="target-right bottom">
+    <button mat-menu-item (click)="increaseSpeed()">
+      Increase movement speed
+    </button>
+    <button mat-menu-item (click)="increaseDirectionChange()">
+      <i class="fa fa-check"></i> Increase direction change
+    </button>
+    <button *ngIf="round > 1" mat-menu-item [matMenuTriggerFor]="subMenu">Other weapon</button>
+
+  </mat-menu>
+  <mat-menu #subMenu="matMenu">
+    <button mat-menu-item (click)="changeWeapon('shotgun')">Shotgun</button>
+    <button mat-menu-item>Uzi</button>
+    <button mat-menu-item>Knife</button>
+  </mat-menu>
+</div> -->
+<br/>
+<div class="container" style="margin-top:5%">
+  <div *ngIf="bestHiscore">
+    Your personal record highscore: {{bestHiscore.score}}
+  </div>
+  <h2 class="mb-3" *ngIf="_gameOver">Game over and out! Your score is: {{hiscore.score}}</h2>
+  <!--Eventueel Modal van ngbootstrap gebruiken of
+    sketch-holder (aka canvas) hiden bij gameOver-->
+
+  <div class="row">
+    <div id="game-overlay" class="col-md-3 row" style="margin-bottom: 4%">
+      <div class="col-sm-2 col-md-12"><b>Total number of kills: {{hiscore.kills}}</b></div>
+      <div *ngIf="gameStarted" class="col-sm-5 col-md-12">
+        <img *ngFor="let bot of bots" src="assets/bot.png" style="height: 67%; width: 20%" alt="weapon-icon" />
+        <img *ngFor="let kill of kills" src="assets/skull.png" style="height: 35%; width: 15%; margin-top: -0.5em" alt="skull-icon" />
+      </div>
+
+      <!-- <p *ngIf="gameOver">New round, let's make it harder!</p> -->
+      <div class="col-sm-2 col-md-12"><b>Bot moving speed: {{mInterval}} ms</b></div>
+      <div class="col-sm-2 col-md-12"><b>Bot direction change: {{dInterval}} ms</b></div>
+      <!-- <p>Bot direction change: {{directionIntervalTime}} ms</p> -->
+      
+      <div *ngIf="weapon && gameStarted" class="col-sm-5 col-md-12" 
+      [ngClass]="{'bulletHeight':  weapon.getNumberOfBulletsLeft() < 7 &&  weapon.getNumberOfBulletsLeft() > 0}"><!--[ngClass]="weapon.numberOfBulletsLeft() > 0 -->
+        <img *ngFor="let bullet of numberOfBulletsLeft()" src="assets/bullet.png"
+         style="height: 45%; width: 15%" alt="bullet-icon" />
+      </div>
+
+      <div class="col-sm-2 col-md-12"><b>Round number: {{hiscore.numberOfRounds}}</b></div>
+      <div class="col-sm-2 col-md-12"><b>Timer in seconds: {{timer}}</b></div>
+      <button class="col-sm-2 col-md-12 btn btn-primary" (click)="onGameButtonClick()" (keydown.space)="$event.preventDefault();">
+        {{gameButtonText()}}</button>
+
+    </div>
+
+    <div id="sketch-holder" class="col-md-9">
+      <!-- Our sketch will go here!, this contains the game canvas! -->
+    </div>
+  </div>
+</div>

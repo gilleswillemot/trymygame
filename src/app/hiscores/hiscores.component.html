@@ -1,0 +1,97 @@
+<br/>
+<div class="container">
+  <div class="card">
+    <div class="card-header">
+      <h3>Hiscore Rankings</h3>
+    </div>
+    <div class="card-body">
+      <div *ngIf="!hiscores || hiscores.length == 0">No hiscores yet!</div>
+      <ngb-accordion #acc="ngbAccordion" [closeOthers]="true" (panelChange)="beforeChange($event)">
+        <ngb-panel id="hiscore" id="{{i}}" *ngFor="let hiscore of hiscores; let i = index">
+          <ng-template ngbPanelTitle>
+            <div id="hiscore" class="row">
+              <div class="col-md-1 col-sm-2">
+                <p>
+                  <b>{{i+1}}.</b>
+                </p>
+              </div>
+              <div class="col-md-10 col-sm-9">
+
+
+                <span>
+                  <b>{{hiscore.score}}</b>
+                </span>
+                &nbsp; &nbsp; &nbsp;
+                <span *ngIf="hiscore.score < 300">
+                  <i>What a bummer!</i>
+                </span>
+
+                <span *ngIf="hiscore.score > 700">
+                  <i>ME ME ME mEEEET YOUR MAKER!</i>
+                </span>
+
+                <span *ngIf="hiscore.score > 400 &&  700 > hiscore.score">
+                  <i>Ki ki killlllllling spree!</i>
+                </span>
+                <span *ngIf="hiscore.score > 299 && 401 > hiscore.score">
+                  <i>Not bad... For a newbie</i>
+                </span>
+              </div>
+              <div class="col-1 ">
+                <button type="button" class="btn btn-danger removeButton float-right" (click)="onRemoveButtonClick(hiscore.id)">
+                  <i class="fa fa-close"></i>
+                </button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template ngbPanelContent>
+            <div class="card-block row">
+
+              <!-- <div *ngFor="let bullet of gameOverlay.bullets"> -->
+              <!-- <div class="col-3">
+                <p>
+                  <b>Used weapon: </b>
+                  <img src="assets/kitchen-knife.png" alt="weapon-icon" />
+                </p>
+              </div> -->
+              <div class="col-3">
+                <p>
+                  <b>Username:</b>&nbsp;<span style="color: red">{{hiscore.username}}
+                  </span>
+                </p>
+              </div>
+              <div class="col-3">
+                <p>
+                  <b>Date:</b>
+                  {{toFormattedDate(hiscore.date)}}
+
+                </p>
+              </div>
+              <div class="col-3">
+                <p>
+                  <b>Number of rounds: </b>{{hiscore.numberOfRounds}}</p>
+              </div>
+              <div class="col-3">
+                <p>
+                  <b>Number of kills: </b>{{hiscore.kills}}</p>
+                <img src="assets/skull.png" alt="weapon-icon" />
+
+              </div>
+              <!-- </div> -->
+
+            </div>
+
+          </ng-template>
+        </ngb-panel>
+      </ngb-accordion>
+    </div>
+    <div class="card-footer"></div>
+  </div>
+
+  <div *ngIf="removeButtonClicked">
+    <app-alert [titel]="'Hiscore verwijderen'" [alertBoodschap]="'Bent u zeker dat u deze hiscore wil verwijderen?'" [welBoodschap]="'Verwijderen'"
+      [nietBoodschap]="'Annuleer'" [isOpen]="openAlert" (actie)="removeHiscore($event)">
+
+    </app-alert>
+  </div>
+</div>

@@ -1,0 +1,48 @@
+<header class="navbar navbar-light bg-faded navbar-fixed-top navbar-expand-lg">
+
+  <a class="navbar-brand mr-5" [routerLink]="['/']" (click)="navbarCollapsed = true">Homepage</a>
+
+  <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+    <ul class="navbar-nav mr-auto">
+      <!-- <li class="nav-item" *ngIf='(currentUser | async)'>
+        <a class="nav-link" [routerLink]="['/homepage']" routerLinkActive="active-current" (click)="navbarCollapsed = true">
+          <i class="fa fa-users"></i> Community/Chat</a>
+      </li> -->
+      <li class="nav-item" *ngIf='(currentUser | async)'>
+        <a class="nav-link" [routerLink]="['/game']" routerLinkActive="active-current" (click)="navbarCollapsed = true">
+          <i class="fa fa-gamepad"></i> Game</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/info']" routerLinkActive="active-current" (click)="navbarCollapsed = true">
+          <i class="fa fa-info"></i> Info</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" [routerLink]="['/hiscores']" routerLinkActive="active-current" (click)="navbarCollapsed = true">
+          <i class="fa fa-trophy"></i> Hiscores</a>
+      </li>
+    </ul>
+    <span class="ml-5">
+      <div ngbDropdown placement="bottom-right" class="border:none;">
+        <button class="btn profileButton" id="dropdownBasic1" ngbDropdownToggle>
+          <span id="username" *ngIf='(currentUser | async)'>{{username}}</span>
+          <i class="fa fa-user"></i>
+        </button>
+        <div style="margin-left: 12%" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+          <div *ngIf='(currentUser | async) else loginlink'>
+            <a class="dropdown-item" routerLink="/profile" (click)="navbarCollapsed = true">My Profile</a>
+            <a class="dropdown-item" routerLink="/logout" (click)="navbarCollapsed = true">Logout</a>
+          </div>
+          <ng-template #loginlink>
+            <a class="dropdown-item" routerLink="/login" (click)="navbarCollapsed = true">Log In</a>
+            <a class="dropdown-item" routerLink="/register" (click)="navbarCollapsed = true">Register</a>
+          </ng-template>
+        </div>
+      </div>
+    </span>
+  </div>
+</header>

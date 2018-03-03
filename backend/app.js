@@ -13,7 +13,7 @@ let passport = require('passport');
 //username = godmode, password = spacebattleisfun1    database spacebattle staat op het mlab account van spacebattle
 mongoose.connect('mongodb://godmode:spacebattleisfun1@ds141068.mlab.com:41068/spacebattle');
 
-require('./models/Hiscore');
+require('./models/Hiscore.model');
 require('./models/User');
 // require('./models/Gebruiker.model');
 
@@ -21,6 +21,7 @@ require('./config/passport');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var hiscores = require('./routes/hiscores');
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use(passport.initialize());
 
 app.use('/', index);
 app.use('/API/users', users);
+app.use('/API/hiscores', hiscores);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

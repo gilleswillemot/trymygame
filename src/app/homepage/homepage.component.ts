@@ -22,8 +22,9 @@ export class HomepageComponent implements OnInit {
   get currentUser(): Observable<string> {
     return this.authService.user$;
   }
-
-  // setup(){
-  //   createCanvas("test");
-  // }
+  get username(): string {
+    let username = "";
+     this.authService.user$.subscribe(item => username = item);
+     return username;
+  }
 }

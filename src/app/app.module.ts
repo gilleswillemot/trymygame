@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AppRoutingModule } from "./app.routing.module";
-
 import { AppComponent } from './app.component';
 import { HomepageComponent } from './homepage/homepage.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -14,13 +13,16 @@ import { GameCanvasComponent } from './game/game-canvas/game-canvas.component';
 //import { UserComponent } from './user/user.component';
 import { HiscoresComponent } from './hiscores/hiscores.component';
 import { HiscoreDataService } from './hiscores/hiscore-data.service';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { UserModule } from './user/user.module';
 import { ProfileComponent } from './profile/profile.component';
 import { AlertModule } from './alert/alert.module';
 import { HttpModule } from '@angular/http';
-    import { HttpClientModule, HttpClient } from '@angular/common/http';
-    
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { httpInterceptorProviders } from './http-interceptors/hiscore';
+import { HiscoreModule } from './hiscores/hiscore.module';
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
+
 
 
 @NgModule({
@@ -34,10 +36,8 @@ import { HttpModule } from '@angular/http';
     GameCanvasComponent,
     // GameOverlayComponent,
     // UserComponent,
-    HiscoresComponent,
     ProfileComponent,
-   
-
+    EditProfileComponent
   ],
   imports: [
     BrowserModule,
@@ -46,13 +46,12 @@ import { HttpModule } from '@angular/http';
     MatMenuModule,
     UserModule,
     AlertModule,
-
+    HiscoreModule,
 
     AppRoutingModule //always as last import
-
   ],
-  providers: [    { provide: LOCALE_ID, useValue: 'nl' },//nl taal instellen (voornamelijk voor 3rdparty software) 
-  HiscoreDataService],
+  providers: [{ provide: LOCALE_ID, useValue: 'nl' },//nl taal instellen (voornamelijk voor 3rdparty software) 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

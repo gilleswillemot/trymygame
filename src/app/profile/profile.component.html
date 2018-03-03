@@ -2,13 +2,33 @@
 <div class="container">
   <div class="card">
     <div class="card-header">
-      <h3>Profile</h3>
+      <div class="row">
+        <div class="col-11">
+          <h3>Profile</h3>
+        </div>
+        <div class="col-1">
+          <a class="float-right" routerLink="/edit-profile">
+            <span class="fa fa-edit" style="font-size: 2em"></span>
+          </a>
+        </div>
+      </div>
     </div>
-    <div class="card-body">
-        <p>Hello, {{username}}! Are you ready for a <a routerLink="/game">game</a>?</p>
-        <p>You'd better check out the  <a routerLink="/hiscores">highscores</a> to look if you're still a top tier player...</p>
+    <div class="card-body"><!--met een userobject eventueel een for loop voor elk attribuut, hergebruik van html-->
+      <div class="row">
+        <div class="ml-5">
+          <b>Username:</b>&nbsp;&nbsp;{{username}}</div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="ml-5">
+          <b>Email:</b>&nbsp;&nbsp;yooyoy@gmail.com</div>
+      </div>
+      <hr>
+      <div class="row">
+          <div class="ml-5">
+            <b>Vornaam:</b>&nbsp;&nbsp;Gilles</div>
+        </div>
     </div>
   </div>
-  <!-- <div class="card-footer"></div>     -->
 </div>
-
+<!-- <div class="card-footer"></div>     -->

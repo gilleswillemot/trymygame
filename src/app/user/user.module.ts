@@ -28,10 +28,9 @@ const routes = [
     RegisterComponent,
     LogoutComponent
   ],
-providers: [
-  AuthenticationService,
-  AuthGuardService,
-  //UserDataService
-]
+  providers: [
+    AuthenticationService,
+    AuthGuardService
+  ]
 })
 export class UserModule { }

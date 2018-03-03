@@ -14,6 +14,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     AlertComponent
   ],
   exports: [
-    AlertComponent]
+    AlertComponent
+  ]
 })
 export class AlertModule { }

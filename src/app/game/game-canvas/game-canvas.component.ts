@@ -104,22 +104,31 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
             this._p5Object.draw = () => this.draw(this._p5Object);
             this.setTimer();
             this.initiateGameAttributes(this._p5Object);
-            this._p5Object.keyReleased = () => this.keyReleased(this._p5Object);
-            this._p5Object.keyPressed = () => this.keyPressed(this._p5Object);
+            this.unfreezeKeys();
             this._gameStarted = true;
         }
     }
 
     private freezeGame() {
-        this._p5Object.keyReleased = undefined;
-        this._p5Object.keyPressed = undefined;
+        this.freezeKeys();
         this._p5Object.noLoop();
 
     }
 
-    private unfreezeGame() {
+    private freezeKeys() {//freezing keys on keyboard.
+        console.log("freezing the buttons");
+        this._p5Object.keyReleased = undefined;
+        this._p5Object.keyPressed = undefined;
+    }
+
+    private unfreezeKeys() {
+        console.log("Unfreezing the buttons");
         this._p5Object.keyReleased = () => this.keyReleased(this._p5Object);
         this._p5Object.keyPressed = () => this.keyPressed(this._p5Object);
+    }
+
+    private unfreezeGame() {
+        this.unfreezeKeys();
         this._p5Object.loop();
     }
 
@@ -202,8 +211,7 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         this.setDirectionInterval(500);
         this.setMovebotsInterval(200);
         this.initiateGameAttributes(this._p5Object);
-        this._p5Object.keyReleased = () => this.keyReleased(this._p5Object);
-        this._p5Object.keyPressed = () => this.keyPressed(this._p5Object);
+        this.unfreezeKeys();
         console.log("RESTART");
         if (this._gameOver) {//volledige restart
             console.log("GAME-OVER restart");
@@ -321,19 +329,17 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
     private gameOver() {
         clearInterval(this._timerObject);
         this._p5Object.noLoop();
-        this._p5Object.keyReleased = undefined;
-        this._p5Object.keyPressed = undefined;
+        this.freezeKeys();
         this._hiscore.calcScore(this._timer);
         console.log("game over");
         this._hiscoreDataService.addNewHiscore(this._hiscore).subscribe(
-            () => { },
+            (item) => { this._bestHiscore = item },
             (error: HttpErrorResponse) => {
                 this.errorMsg = `Error ${error.status} while adding hiscore with score: ${
                     this._hiscore.score
                     }: ${error.error}`;
             }
         );
-        this.besteHiscoreOphalen();
         this._gameOver = true;
     }
 

@@ -3,27 +3,34 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Hiscore } from '../game/models/hiscore.model';
 import { map } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 
 @Injectable()
 export class HiscoreDataService {
-  private _appUrl = '/API';
+  private _appUrl = '/API/hiscores';
   private _hiscores;
 
-  constructor(private http: HttpClient/*, private auth: AuthenticationService*/) {
+  constructor(private http: HttpClient, private auth: AuthenticationService) {
   }
 
   get hiscores(): Observable<Hiscore[]> {
     // return this.http.get(`${this._appUrl}/hiscores/`, { headers: new Headers({Authorization: `Bearer ${this.auth.token}`}) })
     //   .map(response => response.json().map(item => Hiscore.fromJSON(item)));
     return this.http
-      .get(`${this._appUrl}/hiscores/`)
+      .get(`${this._appUrl}/`)
       .pipe(map((list: any[]): Hiscore[] => list.map(Hiscore.fromJSON)));
   }
 
-  bestHiscore(): Observable<Hiscore> {   
+  bestHiscore(): Observable<Hiscore> {  
+        //{ headers: new Headers({ Authorization: `Bearer ${this.auth.token}` })} ) Dit is voor http, niet httpClient
+
+//     let headers = new HttpHeaders();
+// // headers = headers.append("Authorization", "Basic " + btoa("username:password"));
+// headers = headers.append("Authorization", `Bearer ${this.auth.token}`);
+// headers = headers.append("Content-Type", "application/x-www-form-urlencoded"); 
+//return this.http.get<Hiscore>(`${this._appUrl}/bestHiscore/`);
     return this.http
-    .get(`${this._appUrl}/bestHiscore/`)
+    .get(`${this._appUrl}/bestHiscore/`/*, {headers: headers}*/)
     .pipe(map(Hiscore.fromJSON));
   }
 
@@ -37,7 +44,7 @@ export class HiscoreDataService {
     console.log("adding new hiscore to db: ");
     console.log(hiscore);
     return this.http
-      .post(`${this._appUrl}/hiscores/`, hiscore)
+      .post(`${this._appUrl}/new/`, hiscore)
       .pipe(map(Hiscore.fromJSON));
   }
 
@@ -50,7 +57,7 @@ export class HiscoreDataService {
 
   removeHiscore(recId: string): Observable<Hiscore> {
     return this.http
-      .delete(`${this._appUrl}/hiscore/${recId}`)
+      .delete(`${this._appUrl}/delete/${recId}`)
       .pipe(map(Hiscore.fromJSON));
   }
 

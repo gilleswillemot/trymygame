@@ -20,9 +20,10 @@
 </div> -->
 <br/>
 <div class="container" style="margin-top:5%">
-  <div *ngIf="bestHiscore">
+  <div *ngIf="bestHiscore; else noHiscoreYet">
     Your personal record highscore: {{bestHiscore.score}}
   </div>
+  <ng-template #noHiscoreYet>No hiscore yet.</ng-template>
   <h2 class="mb-3" *ngIf="_gameOver">Game over and out! Your score is: {{hiscore.score}}</h2>
   <!--Eventueel Modal van ngbootstrap gebruiken of
     sketch-holder (aka canvas) hiden bij gameOver-->

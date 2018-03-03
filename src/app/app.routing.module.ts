@@ -15,19 +15,21 @@ import { RegisterComponent } from './user/register/register.component';
 import { ProfileComponent } from './profile/profile.component';
 import { UserModule } from './user/user.module';
 import { GameCanvasComponent } from './game/game-canvas/game-canvas.component';
+import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 
 
 const appRoutes: Routes = [
-  //{ path: 'profiel/:userId', component: ProfielComponent },
-  //{ path: 'profiel', component: ProfielComponent },
-  // { path: 'game', component: GameComponent },  
+  {
+    path: 'hiscores',
+    loadChildren: 'app/hiscores/hiscore.module#HiscoreModule'
+  },  
   { path: 'homepage'/*, canActivate: [AuthGuardService]*/, component: HomepageComponent },
   //{ path: 'game', canActivate: [AuthGuardService], loadChildren: '../game/game.module#GameModule' },
   // { path: 'game', component: GameComponent },
   { path: 'game', canActivate: [AuthGuardService], component: GameCanvasComponent },
   { path: 'info', component: InfoComponent },  
-  { path: 'hiscores', component: HiscoresComponent }, 
   { path: 'profile', canActivate: [AuthGuardService], component: ProfileComponent },   
+  { path: 'edit-profile', canActivate: [AuthGuardService], component: EditProfileComponent },   
   { path: '', redirectTo: 'homepage', pathMatch: "full" },
   { path: '**', component: PageNotFoundComponent }
 ];

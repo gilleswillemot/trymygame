@@ -1,5 +1,5 @@
 /*"source app-env && node ./bin/www" was the npm start*/
-require('dotenv').config();
+//require('dotenv').config();
 
 var express = require('express');
 var path = require('path');
@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 let passport = require('passport');
 
 //username = godmode, password = spacebattleisfun1    database spacebattle staat op het mlab account van spacebattle
-mongoose.connect('mongodb://godmode:spacebattleisfun1@ds141068.mlab.com:41068/spacebattle');
+mongoose.connect(DATABASE);
 
 require('./models/Hiscore.model');
 require('./models/User');

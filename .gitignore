@@ -44,3 +44,4 @@ Thumbs.db
 # backend secret
 .env
 backend/.env
+node_modules

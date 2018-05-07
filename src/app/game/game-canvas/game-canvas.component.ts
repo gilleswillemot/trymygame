@@ -21,7 +21,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from '../../user/authentication.service';
 
 // import * as p5 from 'p5';
-//declare var p5: any;
+declare var p5: any;
 
 @Component({
     selector: 'app-game-canvas',
@@ -67,13 +67,12 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         this._bots = [];
         this._shotBullets = [];
         this._timer = 0;
-        // this.setGameUp();
-        //this.besteHiscoreOphalen();
+        this.setGameUp();
+        this.besteHiscoreOphalen();
         this._numberOfKills = this._hiscore.kills;
-        //this.initiateIntervals();
 
-        //this.setMovebotsInterval(200);
-        //this.setDirectionInterval(500);
+        this.setMovebotsInterval(200);
+        this.setDirectionInterval(500);
     }//einde ngOnInit
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -87,8 +86,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
     get bestHiscore() {
         return this._bestHiscore;
     }
-
-
 
     besteHiscoreOphalen() {
         this._hiscoreDataService.bestHiscore().subscribe(item => (this._bestHiscore = item),
@@ -235,12 +232,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         this._hiscore.reset();
     }
 
-    // private setTimer() {
-    //     this._timerObject = setInterval(() => {
-    //         //print("Bots have moved");
-    //         this._timer++;
-    //     }, 1000);
-    // }
     private setTimer() {
         this._timerObject = setInterval(() => {
             //print("Bots have moved");
@@ -260,29 +251,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         }, this._dInterval = interval)
     }
 
-    // initiateIntervals() {
-    //     console.log("first");
-    //     /*Move _bots every 1/10 of a second, 1000=1s */
-
-    //     console.log("then");
-    //     // setTimeout(() => this.moveBots(s), 200);
-    //     /*Change direction of bot every 3 seconds so that it doesn't like "robotic/microbic like" */
-    //       setInterval(() => {
-    //         //print("Bots have moved");
-    //  this.directionIntervalTime = this.changeDirectionBots();
-    //     }, 500 );
-    //     // setTimeout(() =>  this.changeDirectionBots(), 500);
-
-    // }
-
-    // get moveIntervalTime(){
-    //     return this._moveIntervalTime;
-    // }
-
-    // get directionIntervalTime(){
-    //     return this._directionIntervalTime;
-    // }
-
     private setGameUp() {
         const s = (p) => {
             // let song;
@@ -296,16 +264,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
 
         }
         console.log(s);
-        /*
-####################################################
-####################################################
-        NIET VERGETEN P5OBJECT TERUG NAAR NEW P5 TE ZETTEN!
-####################################################
-####################################################
-####################################################
-####################################################
-        */
-        this._p5Object =  null;//new p5(s);
+        this._p5Object = new p5(s);
         console.log(this._p5Object);
     }
 
@@ -316,27 +275,13 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         console.log(canvas);
     }
 
-    // centerCanvas(p) {
-    //     let x = (p.windowWidth - p.width) / 2;
-    //     let y = (p.windowHeight - p.height) / 2;
-    //     p.position(x, y);
-    //   }
-
     private initiateGameAttributes(p) {
-        // this.weapon = player.getWeapon(); // returns weapon object of player, composite.
         this._weapon = new Weapon("Glock", p.height / 2, p.width / 2, "");
         console.log("my weapon is a: " + this._weapon.name);
-        //TODO p.height/2 voor y proberen in constr van player:
         this._player = new Player("Gilles", p.width / 2, p.height / 2, 5, 20, 20, 20, "", this._weapon);
         this._player.loadWeapon(); //fills the player's weapon with bullets.
-        //weapon = player.getWeapon();
-        //bullets = weapon.getBullets();
-        //weapon = new Weapon(player.x, player.y, player.direction, player.step);
 
-        //    bullet = new Bullet(width/2, height/2);
         for (let i = 0; i < this._numberOfBots; i++) {
-            //_bots[i] = new Bot(random((width/2)*(i+1)), random((height/2)*(i+1)));//beginnen met i + 1 want anders is het x = 0 en y = 0 (cijfer * 0 = 0
-
             /*x krijgt een waarde tussen 1 en max breedte -1 en y tussen 1 en max hoogte -1 */
             let name = "bot" + (i + 1);
             this._bots[i] = new Bot(
@@ -367,30 +312,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
 
     private draw(p) {
         p.background(51);
-
-        //going through walls
-
-        // let test = p.getContext('2d');
-        // p.fillStyle = "black";
-        // p.font = "50px Arial";
-        // p.fillText(chartId, 0, 50);
-        // p.drawImage(image, 0, 0);
-        // p.globalCompositeOperation = "destination-over";
-        // p.fillStyle = "#FFFFFF";
-        // p.fillRect(0,0,p.width,p.height);//for white background
-
-        //draws a wall
-        // p.fill(255);
-        //     p.rectMode(p.CENTER);
-        //     p.rect(10, 10, 1, 600);
-        // //
-        //draws a square at round 4
-        // if (this._hiscore.numberOfRounds > 3) {
-        //     p.fill(255);
-        //     p.rectMode(p.CENTER);
-        //     p.rect(200, 200, 40, 50);
-        // }
-
         //if arrow button is released => player.position = "", which does the default case in the switch in the move method (not moving)
         //if arrow button is pushed => player.position = N or E or W or S, depending on which arrow is pushed, thus moving the player
         //in that direction.
@@ -432,11 +353,9 @@ export class GameCanvasComponent implements OnInit, OnChanges {
                     this.deleteObjectFromArray(this._bots, j, 1);
                     if (this._bots.length === 0) {
                         console.log("end of round!!!");
-                        //this._shotBullets.splice(0, this._shotBullets.length);
                         this._shotBullets = [];
                         this.endOfRound();
-                        break loop1;//TODO eventueel ook uit de outer for lus gaan zodat kogel op einde van ronde 
-                        //niet blijft doorgaan in volgende ronde
+                        break loop1;
                     }
                     if (!this._weapon.canPersevere()) {//bullet can't shoot through a bot, if the weapon isn't stronger than a handgun.
                         this.deleteObjectFromArray(this._shotBullets, i, 1);
@@ -469,13 +388,10 @@ export class GameCanvasComponent implements OnInit, OnChanges {
 
     private endOfRound() {
         console.log("end of rounddddddddddddddddddddddddddddddd");
-        // this.mInterval *= 0.9;
-        // this.dInterval *= 0.9;
         this._hiscore.numberOfRounds++;
         if (this._hiscore.numberOfRounds < 5) this.setDirectionInterval(this._dInterval * 0.9);
         this.setMovebotsInterval(this._mInterval * 0.9);
         this.initiateGameAttributes(this._p5Object);
-        //TODO boodschap dat nieuwe ronde gestart is, dan weer weglaten.
     }
 
     private moveBots(p) {
@@ -484,16 +400,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
             let x = bot.x;
             let y = bot.y;
             bot.direction = this.changeToPossibleDirection(p, bot);
-            bot.move();/*
-         if (checkValidMove(bot.x, bot.y)) {
-         print(bot.name + " made a valid move.");
-         } else {
-         print(bot.name + " made an unvalid move, fallback to previous position.");
-         bot.x = x;
-         bot.y = y;
-         
-         bot.move()
-         }*/
+            bot.move();
         }
     }
 
@@ -504,10 +411,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
             this._bots[i].direction = this._directions[Math.floor(Math.random() * 8)];
         }
     }
-
-
-
-
 
     keyReleased(p) {
         if (p.key != ' ') {
@@ -559,7 +462,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
                 this._player.direction = "NE";
                 break;
             default:
-                /* print("Something went wrong with moving your shooter. Maybe the game didn't catch your fast dodging skills...");*/
                 break;
         }
     }
@@ -576,8 +478,6 @@ export class GameCanvasComponent implements OnInit, OnChanges {
      * @param y 
      */
     checkValidPosition(p, x, y) {
-        // console.log("height of canvas is: " + p.height + ", width of canvas is: " + p.width);
-        // console.log("new x position would be: " + x + ", new y position would be: " + y);
         return (x >= 0 && x <= p.width && y >= 0 && y <= p.height); // if the position is in the canvas (x is 0, 1, 2, ..., until width and y from 0, -1, -2, ..., until height)
     }
 
@@ -625,40 +525,5 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         this._shotBullets.push(bullet);
         console.log("shot has been fired to direction: " + direction);
     }
-
-    // import p5 from 'p5';
-    // import 'p5/lib/addons/p5.sound';
-    // import 'p5/lib/addons/p5.dom';
-    // // import drawStars from './modules/drawStars';
-    // import Star from './modules/Star'
-
-    // // Sketch scope
-    // const sketch = (p5) => {
-
-    //   // Variables scoped within p5
-    //   const canvasWidth = p5.windowWidth;
-    //   const canvasHeight = p5.windowHeight;
-    //   // const d = new Star(500, 300, 4);
-
-    //   // make library globally available
-    //   window.p5 = p5;
-
-    //   // Setup function
-    //   // ======================================
-    //   p5.setup = () => {
-    //     let canvas = p5.createCanvas(canvasWidth, canvasHeight);
-    //     canvas.parent('sketch');
-    //     p5.frameRate(10);
-    //   }
-
-    //   // Draw function
-    //   // ======================================
-    //   p5.draw = () => {
-    //     p5.background('#111');
-    //    // drawStars(100)
-    //   }
-    // }
-
-    // export default sketch;
 
 }/*Einde component*/

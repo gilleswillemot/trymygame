@@ -1,6 +1,7 @@
 {
-    "name": "opdracht-webapp",
-    "version": "0.0.0",
+    "name": "TryMyGame",
+    "version": "1.0.0",
+    "description": "This is a game I made using the p5 framework.",
     "license": "MIT",
     "scripts": {
         "ng": "ng",
@@ -9,7 +10,11 @@
         "lint": "ng lint",
         "postinstall": "ng build"
     },
-    "private": true,
+    "author": {
+        "name": "Gilles Willemot",
+        "email": "gilles.willemot@gmail.com",
+        "web": "https://github.com/gilleswillemot"
+      },
     "dependencies": {
         "@angular/animations": "^5.2.7",
         "@angular/cdk": "^5.2.3",

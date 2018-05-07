@@ -1,5 +1,10 @@
 <br/>
 <div class="container">
+  <div *ngIf="!staticAlertClosed">
+    <ngb-alert (close)="staticAlertClosed = true" [dismissible]="false" [type]="'danger'">
+      <strong>Warning!</strong> {{errorMsg}}
+    </ngb-alert>
+  </div>
   <div class="card">
     <div class="card-header">
       <h3>Hiscore Rankings</h3>
@@ -37,10 +42,10 @@
                   <i>Not bad... For a newbie</i>
                 </span>
               </div>
-              <div class="col-1 ">
-                <button type="button" class="btn btn-danger removeButton float-right" (click)="onRemoveButtonClick(hiscore.id)">
-                  <i class="fa fa-close"></i>
-                </button>
+              <div *ngIf="hiscore.username == username" class="col-1">
+                <a style="font-size:1.7em; color:red" class="float-right" (click)="onRemoveButtonClick(hiscore.id)">
+                  <span class="fa fa-trash"></span>
+                </a>
               </div>
             </div>
           </ng-template>
@@ -56,14 +61,15 @@
               </div> -->
               <div class="col-3">
                 <p>
-                  <b>Username:</b>&nbsp;<span style="color: red">{{hiscore.username}}
+                  <b>Username:</b>&nbsp;
+                  <span style="color: red">{{hiscore.username}}
                   </span>
                 </p>
               </div>
               <div class="col-3">
                 <p>
                   <b>Date:</b>
-                  {{toFormattedDate(hiscore.date)}}
+                  {{hiscore.getFormattedDate()}}
 
                 </p>
               </div>
@@ -89,7 +95,7 @@
   </div>
 
   <div *ngIf="removeButtonClicked">
-    <app-alert [titel]="'Hiscore verwijderen'" [alertBoodschap]="'Bent u zeker dat u deze hiscore wil verwijderen?'" [welBoodschap]="'Verwijderen'"
+    <app-alert [titel]="'Hiscore verwijderen'" [alertBoodschap]="'Bent u zeker dat u deze hiscore wenst te verwijderen?'" [welBoodschap]="'Verwijderen'"
       [nietBoodschap]="'Annuleer'" [isOpen]="openAlert" (actie)="removeHiscore($event)">
 
     </app-alert>

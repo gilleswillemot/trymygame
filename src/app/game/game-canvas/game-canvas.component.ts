@@ -10,7 +10,7 @@
 ## voor de betrokken model(s), want er wordt geen foutmelding gegeven hieromtrent. ###
 ######################################################################################*/
 
-import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { Bot } from '../models/bot.model';
 import { Bullet } from '../models/bullet.model';
 import { Weapon } from '../models/weapon.model';
@@ -20,19 +20,15 @@ import { Hiscore } from '../models/hiscore.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from '../../user/authentication.service';
 
-//import { GameOverlay } from '../game-overlay.model';
 // import * as p5 from 'p5';
-declare var p5: any;
-//import {Player } from '../js/modules/player';//gaat niet want angular wil geen js voor security reasons
-
+//declare var p5: any;
 
 @Component({
     selector: 'app-game-canvas',
     templateUrl: './game-canvas.component.html',
     styleUrls: ['./game-canvas.component.css']
 })
-export class GameCanvasComponent implements OnInit, OnDestroy {
-
+export class GameCanvasComponent implements OnInit, OnChanges {
 
     private _player: Player;
     private _bots: Bot[];
@@ -53,49 +49,58 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
     private _dInterval: number; //direction change speed interval
     private _hiscore: Hiscore; //contains the game info: #rounds, score, #kills, etc
     private _bestHiscore: Hiscore;
+    private _numberOfKills: number;
     public errorMsg: string;
-
-    //gameOverlay: GameOverlay;
-    //score: number;
-    // @Output() gameOverlay: EventEmitter<GameOverlay>;
+    public staticAlertClosed = false;
 
     constructor(private _hiscoreDataService: HiscoreDataService, private _authenticationService: AuthenticationService) { }
 
     //canvas;
 
     ngOnInit() {
+        setTimeout(() => this.staticAlertClosed = true, 10000);
+
         let username = "";
         this._authenticationService.user$.subscribe(item => username = item);
-        this._hiscore = new Hiscore(0, 1, 0, username, new Date());
+        this._hiscore = new Hiscore(0, 1, 0, username);
         this._gameOver = false;
         this._bots = [];
         this._shotBullets = [];
         this._timer = 0;
-        this.setGameUp();
-        this.besteHiscoreOphalen();
+        // this.setGameUp();
+        //this.besteHiscoreOphalen();
+        this._numberOfKills = this._hiscore.kills;
         //this.initiateIntervals();
 
-        this.setMovebotsInterval(200);
-        this.setDirectionInterval(500);
-        /* this.gameOverlay = new GameOverlay(this.view, this.player, this.timer,
-             this.moveIntervalTime, this.directionIntervalTime, this._gameOver, this.numberOfKills);
-         console.log(this.gameOverlay);*/
-        // this.gameOverlay.emit(new GameOverlay(this.view, this.player, this.timer, 
-        //     this.moveIntervalTime, this.directionIntervalTime, this.gameOver, this.numberOfKills));
-        // this.gameOverlay.emit(this.gameOverlay1);
-
+        //this.setMovebotsInterval(200);
+        //this.setDirectionInterval(500);
     }//einde ngOnInit
+
+    ngOnChanges(changes: SimpleChanges): void {
+        const hiscore: SimpleChange = changes["_hiscore"];
+        if (!hiscore.isFirstChange()) {
+            console.log("11111111EKKEKEKEKEKKEKKEhiscore kills changed");
+            this._numberOfKills = this._hiscore.kills;
+        }
+    }
 
     get bestHiscore() {
         return this._bestHiscore;
     }
 
+
+
     besteHiscoreOphalen() {
-        this._hiscoreDataService.bestHiscore().subscribe(item => this._bestHiscore = item);
+        this._hiscoreDataService.bestHiscore().subscribe(item => (this._bestHiscore = item),
+            (error: HttpErrorResponse) => {
+                this.errorMsg = `${error.error} Hurry in getting one soon!`;
+            }
+        );
         console.log(this._bestHiscore);
     }
 
     onGameButtonClick() {
+        this.staticAlertClosed = true;
         if (this._gameStarted) {
             console.log("game is starteddddd");
             if (this._gameOver) this.restart();
@@ -158,11 +163,6 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         return buttonText;
     }
 
-    ngOnDestroy() {
-        //this._p5Object.remove();
-
-    }
-
     public numberOfBulletsLeft() {//method to ngFor in html the number of bullets in the weapon
         return Array(this._weapon.getNumberOfBulletsLeft()).fill(0);
     }
@@ -170,9 +170,12 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
     get gameStarted() {
         return this._gameStarted;
     }
-
+    /**
+     * Give the number of seconds since game has started
+     * this._timer counts in milliseconds, divided by 1000 gives the seconds.
+     */
     get timer() {
-        return this._timer;
+        return this._timer / 1000;
     }
 
     get mInterval() {
@@ -194,6 +197,10 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
     get bots() {
         // console.log("getting the bots.");
         return this._bots;
+    }
+
+    get numberOfKills() {
+        return this._hiscore.kills;
     }
 
     get kills() {
@@ -228,11 +235,17 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         this._hiscore.reset();
     }
 
+    // private setTimer() {
+    //     this._timerObject = setInterval(() => {
+    //         //print("Bots have moved");
+    //         this._timer++;
+    //     }, 1000);
+    // }
     private setTimer() {
         this._timerObject = setInterval(() => {
             //print("Bots have moved");
             this._timer++;
-        }, 1000);
+        }, 1);
     }
     private setMovebotsInterval(interval) {
         this._moveIntervalTime = setInterval(() => {
@@ -283,7 +296,16 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
 
         }
         console.log(s);
-        this._p5Object = new p5(s);
+        /*
+####################################################
+####################################################
+        NIET VERGETEN P5OBJECT TERUG NAAR NEW P5 TE ZETTEN!
+####################################################
+####################################################
+####################################################
+####################################################
+        */
+        this._p5Object =  null;//new p5(s);
         console.log(this._p5Object);
     }
 
@@ -333,7 +355,7 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         this._hiscore.calcScore(this._timer);
         console.log("game over");
         this._hiscoreDataService.addNewHiscore(this._hiscore).subscribe(
-            (item) => { this._bestHiscore = item },
+            item => (this._bestHiscore = item),
             (error: HttpErrorResponse) => {
                 this.errorMsg = `Error ${error.status} while adding hiscore with score: ${
                     this._hiscore.score
@@ -345,6 +367,30 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
 
     private draw(p) {
         p.background(51);
+
+        //going through walls
+
+        // let test = p.getContext('2d');
+        // p.fillStyle = "black";
+        // p.font = "50px Arial";
+        // p.fillText(chartId, 0, 50);
+        // p.drawImage(image, 0, 0);
+        // p.globalCompositeOperation = "destination-over";
+        // p.fillStyle = "#FFFFFF";
+        // p.fillRect(0,0,p.width,p.height);//for white background
+
+        //draws a wall
+        // p.fill(255);
+        //     p.rectMode(p.CENTER);
+        //     p.rect(10, 10, 1, 600);
+        // //
+        //draws a square at round 4
+        // if (this._hiscore.numberOfRounds > 3) {
+        //     p.fill(255);
+        //     p.rectMode(p.CENTER);
+        //     p.rect(200, 200, 40, 50);
+        // }
+
         //if arrow button is released => player.position = "", which does the default case in the switch in the move method (not moving)
         //if arrow button is pushed => player.position = N or E or W or S, depending on which arrow is pushed, thus moving the player
         //in that direction.
@@ -372,12 +418,8 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
             let bullet = this._shotBullets[i];
 
             if (!this.checkValidPosition(this._p5Object, bullet.x, bullet.y)) {//if bullet is out of canvas
-                console.log("number of bullets: ", this._shotBullets.length);
                 this.deleteObjectFromArray(this._shotBullets, i, 1);
-                console.log("number of bullets: ", this._shotBullets.length);
                 console.log("bullet went out of canvas");
-                console.log("number of bullets in gun: ", this._weapon.getNumberOfBulletsLeft());
-
                 if (this.isGameOver()) break loop1;
                 else continue loop1;
             }
@@ -430,7 +472,7 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         // this.mInterval *= 0.9;
         // this.dInterval *= 0.9;
         this._hiscore.numberOfRounds++;
-        this.setDirectionInterval(this._dInterval * 0.9);
+        if (this._hiscore.numberOfRounds < 5) this.setDirectionInterval(this._dInterval * 0.9);
         this.setMovebotsInterval(this._mInterval * 0.9);
         this.initiateGameAttributes(this._p5Object);
         //TODO boodschap dat nieuwe ronde gestart is, dan weer weglaten.
@@ -570,10 +612,7 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
 
     public shoot(direction?: string) {
         let bullet: Bullet = this._player.shoot();
-        console.log(this._weapon);
         bullet.x = this._weapon.x;
-        console.log(this._weapon);
-
         bullet.y = this._weapon.y;
         console.log("direction of shot: " + direction);
 

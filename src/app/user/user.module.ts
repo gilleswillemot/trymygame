@@ -1,5 +1,5 @@
 import { AuthGuardService } from './auth-guard.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthenticationService } from './authentication.service';
@@ -8,6 +8,8 @@ import { CommonModule } from '@angular/common';
 import { HttpModule } from '@angular/http';
 import { RegisterComponent } from './register/register.component';
 import { LogoutComponent } from './logout/logout.component';
+import { UserInformationComponent } from './user-information/user-information.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //import { UserDataService } from '../services/user-data.service';
 
 const routes = [
@@ -21,16 +23,22 @@ const routes = [
     CommonModule,
     HttpModule,
     ReactiveFormsModule,
+    FormsModule,
+    NgbModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     LoginComponent,
     RegisterComponent,
-    LogoutComponent
+    LogoutComponent,
+    UserInformationComponent
   ],
   providers: [
     AuthenticationService,
     AuthGuardService
+  ],
+  exports: [
+    UserInformationComponent
   ]
 })
 export class UserModule { }

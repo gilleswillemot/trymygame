@@ -8,16 +8,11 @@ import { Http } from '@angular/http';
 })
 export class AppComponent implements OnInit {
 
-  constructor(private _httpService: Http) {
+  constructor() {
 
   }
 
   ngOnInit() {
-
+  
   }
-
-  public getHttpService(): Http {
-    return this._httpService;
-  }
-
 }

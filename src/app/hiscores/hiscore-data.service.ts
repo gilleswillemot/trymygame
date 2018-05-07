@@ -51,7 +51,7 @@ export class HiscoreDataService {
 
   // addCommentToHiscore(comment: String, hiscore: Hiscore): Observable<String> {
   //   return this.http.post(`${this._appUrl}/hiscore/${hiscore.id}/comments`, comment)
-  //     .map(res => res.json()).map(item => item /*Ingredient.fromJSON(item)*/);//geeft als result alle comments terug, gewone String objecten
+  //     .map(res => res.json()).map(item => item /*Hiscore.fromJSON(item)*/);//geeft als result alle comments terug, gewone String objecten
   //     //dus is er geen fromJson conversie nodig.
   // }
 

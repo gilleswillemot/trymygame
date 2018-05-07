@@ -13,20 +13,30 @@
         </div>
       </div>
     </div>
-    <div class="card-body"><!--met een userobject eventueel een for loop voor elk attribuut, hergebruik van html-->
+    <div class="card-body" *ngIf="currentUser"><!--met een userobject eventueel een for loop voor elk attribuut, hergebruik van html-->
       <div class="row">
         <div class="ml-5">
           <b>Username:</b>&nbsp;&nbsp;{{username}}</div>
       </div>
       <hr>
+      <div class="row" *ngIf="fullname">
+          <div class="ml-5">
+            <b>Full name:</b>&nbsp;&nbsp;{{fullname}}</div>
+        </div>
+        <hr *ngIf="fullname">
       <div class="row">
         <div class="ml-5">
-          <b>Email:</b>&nbsp;&nbsp;yooyoy@gmail.com</div>
+          <b>Creation date:</b>&nbsp;&nbsp;{{creationDate}}</div>
       </div>
       <hr>
-      <div class="row">
+      <div class="row" *ngIf="email">
+        <div class="ml-5">
+          <b>Email:</b>&nbsp;&nbsp;{{email}}</div>
+      </div>
+      <hr *ngIf="email">
+      <div class="row" *ngIf="birthday">
           <div class="ml-5">
-            <b>Vornaam:</b>&nbsp;&nbsp;Gilles</div>
+            <b>Birthday:</b>&nbsp;&nbsp;{{birthday}}</div>
         </div>
     </div>
   </div>

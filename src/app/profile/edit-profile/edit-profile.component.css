@@ -1,8 +1,12 @@
-.card-header, .card-footer{
+.card-header, .card-footer {
     background-color: #292b2c !important;
     color: white;
 } 
 
-.card-body{
+.card-body {
     background-color:  #afb4b6;
+}
+
+#back:hover {
+    text-decoration: none;
 }

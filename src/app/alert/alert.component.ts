@@ -1,26 +1,31 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import {
-  NgbAlertConfig, NgbModal, ModalDismissReasons, NgbModalRef, NgbActiveModal
-} from '@ng-bootstrap/ng-bootstrap';
+  Component, OnInit, Input, EventEmitter, Output, ViewChild, ElementRef, OnChanges, SimpleChanges,
+  SimpleChange, ViewEncapsulation
+} from '@angular/core';
+import { NgbAlertConfig, NgbModal, ModalDismissReasons, NgbModalRef, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 
 @Component({
   selector: 'app-alert',
   templateUrl: './alert.component.html',
   styleUrls: ['./alert.component.css'],
-  providers: [NgbAlertConfig]
-  //  styles: [`   
-  // .red-modal .modal-content {
-  //      background-color: red;
-  //      color: white;
-  //    }
-  //    .red-modal .close {
-  //      color: white;   
-  //    }
-  //  `]
+  providers: [NgbAlertConfig],
+  encapsulation: ViewEncapsulation.None,
+  styles: [`   
+  .red-modal .modal-content {
+       background-color: red;
+       color: white;
+     }
+     .red-modal .close {
+       color: white;   
+     }
+     .btn-default:hover {
+       opacity: 0.8;
+     }
+   `]
 })
-export class AlertComponent implements OnInit, OnChanges {
-    //    alertConfig.dismissible = false;  
+export class AlertComponent implements OnInit {
+  //    alertConfig.dismissible = false;  
 
   @Input() titel: string;
   @Input() alertBoodschap: string;
@@ -34,7 +39,7 @@ export class AlertComponent implements OnInit, OnChanges {
   private _nietBoodschap: string;
   private _isOpen: boolean;
 
-  changeLog:string[] = [];
+  changeLog: string[] = [];
 
   @Output() actie = new EventEmitter<boolean>();
   //TODO in de toekomst eventueel 1 object met de bovenstaande attributen.
@@ -50,37 +55,6 @@ export class AlertComponent implements OnInit, OnChanges {
     this._nietBoodschap = this.nietBoodschap;
     this._isOpen = this.isOpen;
     this._welBoodschap = this.welBoodschap
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    for (let propName in changes) {
-      let chng = changes[propName];
-      let cur  = JSON.stringify(chng.currentValue);
-      let prev = JSON.stringify(chng.previousValue);
-      this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
-      console.log(this.changeLog);
-    }
-    const titel: SimpleChange = changes["titel"];
-    if(titel.isFirstChange()){
-      this._titel = this.titel;
-    }
-    const alertBoodschap: SimpleChange = changes["alertBoodschap"];
-    if(titel.isFirstChange()){
-      this._alertBoodschap = this.alertBoodschap;
-    }
-    const nietBoodschap: SimpleChange = changes["nietBoodschap"];
-    if(titel.isFirstChange()){
-      this._nietBoodschap = this.nietBoodschap;
-    }
-    const isOpen: SimpleChange = changes["isOpen"];
-    if(titel.isFirstChange()){
-      this._isOpen = this.isOpen;
-    }
-    const welBoodschap: SimpleChange = changes["welBoodschap"];
-    if(titel.isFirstChange()){
-      this._welBoodschap = this.welBoodschap;
-    }
-
   }
 
   get titel2() {
@@ -113,10 +87,40 @@ export class AlertComponent implements OnInit, OnChanges {
   //}
 
   open(content) {
-    this.modalService.open(content/*, { windowClass: 'red-modal' }*/);
+    this.modalService.open(content, { windowClass: 'red-modal' });
   }
 
   uitvoeren(accepteren: boolean) {
     this.actie.emit(accepteren);
   };
 }
+
+// ngOnChanges(changes: SimpleChanges): void {
+//   for (let propName in changes) {
+//     let chng = changes[propName];
+//     let cur  = JSON.stringify(chng.currentValue);
+//     let prev = JSON.stringify(chng.previousValue);
+//     this.changeLog.push(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
+//     console.log(this.changeLog);
+//   }
+//   const titel: SimpleChange = changes["titel"];
+//   if(!titel.isFirstChange()){
+//     this._titel = this.titel;
+//   }
+//   const alertBoodschap: SimpleChange = changes["alertBoodschap"];
+//   if(!alertBoodschap.isFirstChange()){
+//     this._alertBoodschap = this.alertBoodschap;
+//   }
+//   const nietBoodschap: SimpleChange = changes["nietBoodschap"];
+//   if(!nietBoodschap.isFirstChange()){
+//     this._nietBoodschap = this.nietBoodschap;
+//   }
+//   const isOpen: SimpleChange = changes["isOpen"];
+//   if(!isOpen.isFirstChange()){
+//     this._isOpen = this.isOpen;
+//   }
+//   const welBoodschap: SimpleChange = changes["welBoodschap"];
+//   if(!welBoodschap.isFirstChange()){
+//     this._welBoodschap = this.welBoodschap;
+//   }
+// }

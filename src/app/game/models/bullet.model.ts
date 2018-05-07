@@ -1,8 +1,9 @@
 export class Bullet {
 
-constructor(private _name:string, private _x?: number, private _y?: number, private _step?:number,
+constructor(private _name:string, private _x?: number, private _y?: number, private _xStep?:number, private _yStep?:number,
 private _direction?: string, private _radius?:number){
-    this._step = 5;
+    this._xStep = this._xStep ? this._xStep : 5;
+    this._yStep = this._yStep ? this._yStep : 5;
     this._direction = "N";
     this._radius = 5;
 }    
@@ -57,15 +58,15 @@ hits(p, bot){
 //TODO kijken of move van alle models niet kan gerecycled worden (code hergebruiken).
 move() {
         switch (this._direction) {
-            case "SE": this.x += this._step; this.y += this._step; break;
+            case "SE": this.x += this._xStep; this.y += this._yStep; break;
             //case "S" //if it has to go down aka South
-            case "SW": this.x -= this._step; this.y += this._step; break;
-            case "NE": this.x += this._step; this.y -= this._step; break;
-            case "NW": this.x -= this._step; this.y -= this._step; break;
-            case "N": this.y -= this._step; break;
-            case "E": this.x += this._step; break;
-            case "S": this.y += this._step; break;
-            case "W": this.x -= this._step; break;
+            case "SW": this.x -= this._xStep; this.y += this._yStep; break;
+            case "NE": this.x += this._xStep; this.y -= this._yStep; break;
+            case "NW": this.x -= this._xStep; this.y -= this._yStep; break;
+            case "N": this.y -= this._yStep; break;
+            case "E": this.x += this._xStep; break;
+            case "S": this.y += this._yStep; break;
+            case "W": this.x -= this._xStep; break;
         }
     }
 

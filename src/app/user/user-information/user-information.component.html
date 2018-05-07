@@ -1,0 +1,156 @@
+<form [formGroup]='user' (ngSubmit)='onSubmit()' *ngIf="ready">
+  <div class="row mt-3 mb-3">
+    <h4 class="col-10 offset-1 text-center">Welcome, Sir
+      <span *ngIf="!username; else uusername"> ...</span>
+      <ng-template #uusername>
+        <b> {{username}}</b>
+      </ng-template>
+    </h4>
+  </div>
+  <div class="form-group row">
+    <div class="col-3 offset-2">
+      <label class="float-right">Email:</label>
+    </div>
+    <div class="col-4">
+      <input class="form-control" type="text" formControlName='email'>
+      <div class='alert alert-danger' *ngIf=' user.get("email").errors?.required && user.get("email").touched'>
+        Uw email is verplicht.
+      </div>
+      <div class='alert alert-danger' *ngIf=' user.get("email").errors?.email && user.get("email").dirty'>
+        Gelieve een geldig email adres in te vullen.</div>
+      <!-- {{user.get("email").length}} > 0 -->
+
+      <div class='alert alert-danger' *ngIf='user.get("email").errors?.emailAlreadyExists && user.get("email").touched'>
+        A user with that email already exists
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group row">
+
+    <div class="col-3 offset-2">
+      <label class="float-right">Gebruikersnaam:</label>
+    </div>
+    <div class="col-4">
+      <input class="form-control" formControlName='username'>
+      <div class='alert alert-danger' *ngIf=' user.get("username").errors?.required && user.get("username").touched'>
+        <!-- a username is required -->
+        Gelieve een gebruikersnaam op te geven.
+      </div>
+      <div class='alert alert-danger' *ngIf='user.get("username").errors?.minlength && user.get("username").touched'>
+        <!-- the username should be at least {{user.get("username").errors?.minlength.requiredLength }} letters -->
+        De gebruikersnaam moet minimum {{user.get("username").errors?.minlength.requiredLength }} letters bevatten.
+      </div>
+      <div class='alert alert-danger' *ngIf='user.get("username").errors?.userAlreadyExists && user.get("username").touched'>
+        <!-- a user with that name already exists -->
+        Er bestaat al een gebruiker met deze gebruikersnaam
+      </div>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-3 offset-2">
+      <label class="float-right">Voornaam:</label>
+    </div>
+    <div class="col-4">
+      <input class="form-control" formControlName='firstname'>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-3 offset-2">
+      <label class="float-right">Familienaam:</label>
+    </div>
+    <div class="col-4">
+      <input class="form-control" formControlName='surname'>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-3 offset-2">
+      <label class="float-right">Geboortedatum:</label>
+    </div>
+    <div class="col-4">
+      <!-- <input class="form-control" formControlName='birthday'> -->
+      <ngb-datepicker *ngIf="ready" 
+      [startDate]="user.value.birthday"
+      (select)="changeDate($event)" 
+        #dp [(ngModel)]="user.value.birthday" (navigate)="date = $event.next; changeDate($event.next, $event)" 
+        [minDate]="minDate" [maxDate]="maxDate" [ngModelOptions]="{standalone: true}"></ngb-datepicker>
+      <div class='alert alert-danger' *ngIf='user.get("birthday").errors?.wrongDate'>
+        Foutieve datum. Gelieve een geldige geboortedatum in te vullen (ouder dan 4 jaar).
+      </div>
+      <!-- <div class='alert alert-danger' *ngIf='user.get("birthday").errors?.noDaySelected'>
+        Gelieve een dag te selecteren. </div>-->
+    </div> 
+  </div>
+  <!-- <p *ngIf="ready">{{user.value.birthday.year}}</p> -->
+  <!-- <div class="row" *ngIf="!showPasswordForm; else other"> -->
+  <div class="row mb-3" *ngIf="currentUser">
+    <div class="col-2 offset-5">
+      <button type="button" class="btn btn-primary" (click)="editPassword()">
+        <span *ngIf="!showPasswordForm" class="fa fa-edit"></span>
+        <span *ngIf="!showPasswordForm">Wachtwoord wijzigen</span>
+        <span *ngIf="showPasswordForm" class="fa fa-close"></span>
+        <span *ngIf="showPasswordForm">Wachtwoord niet wijzigen</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- <ng-template #other> -->
+  <div *ngIf="showPasswordForm">
+    <div class="form-group" formGroupName='passwordGroup'>
+      <div class="row" *ngIf="currentUser">
+        <div class="col-3 offset-2">
+          <label class="float-right">Huidig wachtwoord:</label>
+        </div>
+        <div class="col-4">
+          <input type="password" class="form-control" formControlName='currentPassword'>
+          <div class='error' *ngIf='passwordControl.errors?.passwordTooShort && passwordControl.touched'>
+            Gelieve een geldig wachtwoord in te vullen.
+          </div>
+          <div class='alert alert-danger' *ngIf='passwordControl.errors?.wrongPassword && passwordControl.touched'>
+            Verkeerd wachtwoord!
+          </div>
+        </div>
+      </div>
+      <div *ngIf="correctCurrentPassword || !currentUser">
+        <div class="row mt-3">
+          <div class="col-3 offset-2">
+            <label class="float-right">Wachtwoord:</label>
+          </div>
+          <div class="col-4">
+            <input type="password" class="form-control" formControlName='password'>
+            <div class='error' *ngIf='passwordControl.errors?.passwordTooShort && passwordControl.touched'>
+              Wachtwoord te kort, gelieve minstens {{passwordControl.errors?.passwordTooShort.requiredLength}} letters te gebruiken (U
+              heeft momenteel: {{passwordControl.errors?.passwordTooShort.actualLength}} letters)
+            </div>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-1"></div>
+          <div class="col-4">
+            <label class="float-right">Bevestig wachtwoord:</label>
+          </div>
+          <div class="col-4">
+            <input type="password" class="form-control" formControlName='confirmPassword'>
+            <div class='error' *ngIf='user.get("passwordGroup").errors?.passwordsDiffer && user.get("passwordGroup").get("confirmPassword").touched  && user.get("passwordGroup").get("password").touched'>
+              De 2 wachtwoorden moeten hetzelfde zijn.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-5">
+    <button type='submit' [disabled]='!user.valid' class="btn btn-primary col-4 offset-4">
+      <span *ngIf="currentUser; else otherButton">
+        <i class="fa fa-user-check"></i> Wijzigingen doorvoeren
+      </span>
+      <ng-template #otherButton>
+        <span>
+          <i class="fa fa-user-plus"></i> Account aanmaken
+        </span>
+      </ng-template>
+    </button>
+    <button class="btn btn-default" (click)="_location.back();">annuleer</button>
+  </div>
+</form>

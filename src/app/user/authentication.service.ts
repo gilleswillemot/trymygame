@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
+import { User } from './user.model';
 
 function parseJwt(token) {
   if (!token) {
@@ -60,6 +61,19 @@ export class AuthenticationService {
     );
   }
 
+  getCurrentUser(): Observable<User> {
+    return this.http
+      .get(`${this._url}/currentUser`)
+      .pipe(map(User.fromJSON));
+  }
+
+  // getUser(): Observable<User> {
+  //   return this.http
+  //   .get(`${this._url}/user/${id}`)
+  //   .pipe(map(User.fromJSON));
+
+  // }
+
   logout() {
     if (this.user$.getValue()) {
       localStorage.removeItem(this._tokenKey);
@@ -67,13 +81,30 @@ export class AuthenticationService {
     }
   }
 
-  register(username: string, password: string): Observable<boolean> {
-    return this.http.post(`${this._url}/register`, { username, password }).pipe(
+  register(newUser: User): Observable<boolean> {
+    console.log(newUser);
+    return this.http.post(`${this._url}/register`, newUser).pipe(
       map((res: any) => {
         const token = res.token;
         if (token) {
           localStorage.setItem(this._tokenKey, token);
-          this._user$.next(username);
+          this._user$.next(newUser.username);
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
+  update(user: User): Observable<boolean> {
+      const theUrl = `${this._url}/update/${user.username}`;
+      return this.http.post(theUrl, user).pipe(map((res: any) => {
+        console.log(res);
+        const raw = res;
+        if (user) {
+          // localStorage.setItem(this._tokenKey, token);
+          // this._user$.next(user.username);
           return true;
         } else {
           return false;
@@ -86,6 +117,30 @@ export class AuthenticationService {
     return this.http.post(`${this._url}/checkusername`, { username }).pipe(
       map((item: any) => {
         if (item.username === 'alreadyexists') {
+          return false;
+        } else {
+          return true;
+        }
+      })
+    );
+  }
+
+  checkEmailAvailability(email: string): Observable<boolean> {
+    return this.http.post(`${this._url}/checkemail`, { email }).pipe(
+      map((item: any) => {
+        if (item.email === 'alreadyexists') {
+          return false;
+        } else {
+          return true;
+        }
+      })
+    );
+  }
+
+  checkCorrectCurrentPassword(username: string, password: string): Observable<boolean> {
+    return this.http.post(`${this._url}/checkpassword/${username}`, { password }).pipe(
+      map((item: any) => {
+        if (item.email === 'wrongpassword') {
           return false;
         } else {
           return true;

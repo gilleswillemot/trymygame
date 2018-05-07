@@ -16,6 +16,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserModule } from './user/user.module';
 import { GameCanvasComponent } from './game/game-canvas/game-canvas.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
+import {APP_BASE_HREF} from '@angular/common';
 
 
 const appRoutes: Routes = [
@@ -42,6 +43,8 @@ const appRoutes: Routes = [
   declarations: [],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: [{provide: APP_BASE_HREF, useValue : '/' }]
+
 })
 export class AppRoutingModule { }

@@ -3,6 +3,7 @@ import { NgbPanelChangeEvent } from '@ng-bootstrap/ng-bootstrap';
 import { Hiscore } from '../game/models/hiscore.model';
 import { HiscoreDataService } from './hiscore-data.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { AuthenticationService } from '../user/authentication.service'
 
 @Component({
   selector: 'app-hiscores',
@@ -17,8 +18,10 @@ export class HiscoresComponent implements OnInit {
   public removeButtonClicked: boolean = false;
   private _hiscores: Hiscore[];
   public errorMsg: string;
+  public staticAlertClosed: boolean = true;
+  public _username: string;
 
-  constructor(private _hiscoreDataService: HiscoreDataService) { }
+  constructor(private _hiscoreDataService: HiscoreDataService, private _authenticationService: AuthenticationService) { }
 
   ngOnInit() {
     //ToDo eerst gewoon lichte data van hiscores ophalen, bij klik alle data van die specifieke hiscore ophalen
@@ -26,11 +29,11 @@ export class HiscoresComponent implements OnInit {
     this._hiscoreDataService.hiscores.subscribe(
       hiscores => (this._hiscores = hiscores.sort((a, b) => b.kills - a.kills)),
       (error: HttpErrorResponse) => {
-        this.errorMsg = `Error ${
-          error.status
-          } while trying to retrieve recipes: ${error.error}`;
+        this.errorMsg = `Error ${error.status} while trying to retrieve recipes: ${error.error}`;
       }
     );
+
+    this._authenticationService.user$.subscribe(item => this._username = item);
 
     /**Test data */
     // this._hiscores = [];
@@ -40,6 +43,10 @@ export class HiscoresComponent implements OnInit {
     // for(let i = 0; i < this._hiscores.length; i++){
     //   this._hiscores[i].id = i.toString();
     // }
+  }
+
+  get username() {
+    return this._username;
   }
 
   get hiscores() {
@@ -65,9 +72,9 @@ export class HiscoresComponent implements OnInit {
       this._hiscoreDataService.removeHiscore(this.hiscoreId).subscribe(
         item => (this._hiscores = this._hiscores.filter(val => item.id !== val.id)),
         (error: HttpErrorResponse) => {
-          this.errorMsg = `Error ${error.status} while removing hiscores for hiscore with following id ${
-            this.hiscoreId
-            }: ${error.error}`;
+          this.staticAlertClosed = false;
+          setTimeout(() => this.staticAlertClosed = true, 5000);
+          this.errorMsg = `${error.error}`;
         }
       );
     }
@@ -80,12 +87,5 @@ export class HiscoresComponent implements OnInit {
   public onRemoveButtonClick(hiscoreId: string) {
     this.removeButtonClicked = true;
     this.hiscoreId = hiscoreId;
-  }
-
-  public toFormattedDate(dateString: string): string {
-    let date = new Date(dateString);
-    let dateFormattedString = date.toLocaleString('nl-NL',
-      { day: 'numeric', month: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-      return dateFormattedString;
-  }
+  }  
 }

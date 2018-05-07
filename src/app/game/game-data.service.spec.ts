@@ -1,11 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
 import { GameDataService } from './game-data.service';
+import { Http, ConnectionBackend, RequestOptions, HttpModule } from '@angular/http';
+import { HttpClientModule } from '@angular/common/http';
+import { AuthenticationService } from '../user/authentication.service';
 
 describe('GameDataService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GameDataService]
+      providers: [GameDataService, Http, ConnectionBackend, AuthenticationService],
+      imports: [HttpClientModule, HttpModule]
     });
   });
 

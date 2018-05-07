@@ -32,7 +32,7 @@
           <span id="username" *ngIf='(currentUser | async)'>{{username}}</span>
           <i class="fa fa-user"></i>
         </button>
-        <div style="margin-left: 12%" ngbDropdownMenu aria-labelledby="dropdownBasic1">
+        <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
           <div *ngIf='(currentUser | async) else loginlink'>
             <a class="dropdown-item" routerLink="/profile" (click)="navbarCollapsed = true">My Profile</a>
             <a class="dropdown-item" routerLink="/logout" (click)="navbarCollapsed = true">Logout</a>

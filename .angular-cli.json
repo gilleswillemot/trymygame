@@ -23,9 +23,9 @@
         "./node_modules/font-awesome/css/font-awesome.css",
         "styles.css"
       ],
-      "scripts": [ "./p5_scripts/p5/lib/p5.min.js",   
-        "./p5_scripts/p5/lib/addons/p5.sound.js",   
-        "./p5_scripts/p5/lib/addons/p5.dom.js"  ],
+      "scripts": [ "../p5_scripts/p5/lib/p5.min.js",   
+        "../p5_scripts/p5/lib/addons/p5.sound.js",   
+        "../p5_scripts/p5/lib/addons/p5.dom.js"  ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

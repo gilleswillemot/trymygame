@@ -1,2 +1,2 @@
 # trymygame
-game I made using the MEAN stack.
+This is a game that I created by using the MEAN stack.

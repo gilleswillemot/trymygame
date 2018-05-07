@@ -11,7 +11,7 @@ var mongoose = require('mongoose');
 let passport = require('passport');
 
 //username = godmode, password = spacebattleisfun1    database spacebattle staat op het mlab account van spacebattle
-mongoose.connect(DATABASE);
+mongoose.connect(process.env.DATABASE);
 
 require('./models/Hiscore.model');
 require('./models/User');

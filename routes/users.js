@@ -6,7 +6,7 @@ let passport = require('passport');
 let jwt = require('express-jwt');
 
 let auth = jwt({
-  secret: SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
+  secret: process.env.SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
 });
 
 router.post('/register', function (req, res, next) {

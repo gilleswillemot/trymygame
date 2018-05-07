@@ -5,16 +5,19 @@
     "license": "MIT",
     "scripts": {
         "ng": "ng",
-        "start": "node ./bin/www",
+        "startdev": "ng serve --proxy-config proxy.conf.json",
+        "start": "node ./bin/www ng serve",
         "build": "ng build",
+        "test": "ng test",
         "lint": "ng lint",
+        "e2e": "ng e2e",
         "postinstall": "ng build"
     },
     "author": {
         "name": "Gilles Willemot",
         "email": "gilles.willemot@gmail.com",
         "web": "https://github.com/gilleswillemot"
-      },
+    },
     "dependencies": {
         "@angular/animations": "^5.2.7",
         "@angular/cdk": "^5.2.3",

@@ -10,9 +10,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let passport = require('passport');
 
-mongoose.connect(process.env.DATABASE, {
+mongoose.connect(process.env.DATABASE/*, {
   useMongoClient: true
-});
+}*/);
 
 require('./models/Hiscore.model');
 require('./models/User');

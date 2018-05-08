@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { AlertModule } from '../alert/alert.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { basehttpInterceptorProviders, httpInterceptorProviders  }
- from '../http-interceptors/index';
+ from '../http-interceptors/hiscore';
 
 const routes = [
   { path: 'hiscores', component: HiscoresComponent },

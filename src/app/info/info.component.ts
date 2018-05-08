@@ -12,9 +12,6 @@ export class InfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    /*workaround verwijderen canvas: service aanmaken, injecteren in components, remove oproepen */ 
-    let test = new p5().remove();
-    console.log(test);
   }
 
 }

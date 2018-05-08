@@ -19,7 +19,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { AlertModule } from './alert/alert.module';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-import { httpInterceptorProviders } from './http-interceptors/hiscore';
+import { basehttpInterceptorProviders  } from './http-interceptors';
 import { HiscoreModule } from './hiscores/hiscore.module';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 
@@ -50,7 +50,8 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
 
     AppRoutingModule //always as last import
   ],
-  providers: [{ provide: LOCALE_ID, useValue: 'nl' },//nl taal instellen (voornamelijk voor 3rdparty software) 
+  providers: [basehttpInterceptorProviders,
+    { provide: LOCALE_ID, useValue: 'nl' },//nl taal instellen (voornamelijk voor 3rdparty software) 
   ],
   bootstrap: [AppComponent]
 })

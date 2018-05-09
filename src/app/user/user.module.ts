@@ -10,8 +10,8 @@ import { RegisterComponent } from './register/register.component';
 import { LogoutComponent } from './logout/logout.component';
 import { UserInformationComponent } from './user-information/user-information.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { basehttpInterceptorProviders } from '../http-interceptors/hiscore';
 //import { UserDataService } from '../services/user-data.service';
-// import { basehttpInterceptorProviders } from '../http-interceptors';
 
 const routes = [
   { path: 'login', component: LoginComponent },
@@ -35,7 +35,8 @@ const routes = [
     UserInformationComponent
   ],
   providers: [
-    AuthenticationService,/*,basehttpInterceptorProviders,*/
+    AuthenticationService, 
+    basehttpInterceptorProviders,
     AuthGuardService
   ],
   exports: [

@@ -26,9 +26,10 @@ var hiscores = require('./routes/hiscores');
 
 var app = express();
 
+app.use(cors({ origin: '*' }));
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico'))); TODO, assests?? public/images??
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -36,10 +37,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 
-app.use(express.static(__dirname + '/dist'));
 app.use('/', index);
 app.use('/API/users', users);
 app.use('/API/hiscores', hiscores);
+app.use(express.static(__dirname + '/dist'));
+
+// app.all('*', (req, res) => {
+//   const indexFile = `${path.join(__dirname, 'dist')}/index.html`;
+//   res.status(200).sendFile(indexFile);
+// });
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -58,8 +64,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json(err.message);
 });
-app.all('*', (req, res) => {
-  const indexFile = `${path.join(__dirname, 'dist')}/index.html`;
-  res.status(200).sendFile(indexFile);
-});
+
 module.exports = app;

@@ -8,7 +8,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { InfoComponent } from './info/info.component';
 import { HiscoresComponent } from './hiscores/hiscores.component';
 import { AuthGuardService } from './user/auth-guard.service';
-import { PreloadAllModules } from '@angular/router/src/router_preloader';
+// import { PreloadAllModules } from '@angular/router/src/router_preloader';
 import { LoginComponent } from './user/login/login.component';
 import { LogoutComponent } from './user/logout/logout.component';
 import { RegisterComponent } from './user/register/register.component';
@@ -39,7 +39,7 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     UserModule,
-   RouterModule.forRoot(appRoutes, {preloadingStrategy: PreloadAllModules})
+   RouterModule.forRoot(appRoutes, {preloadingStrategy: SelectivePreloadStrategy})
     
   ],
   declarations: [],

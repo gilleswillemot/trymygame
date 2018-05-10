@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+  // providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
   // /*APP_BASE_HREF*//*BACKEND_URL*/, useValue : '/' }/*SelectivePreloadStrategy*/]
 
 })

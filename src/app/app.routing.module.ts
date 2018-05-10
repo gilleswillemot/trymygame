@@ -17,7 +17,7 @@ import { UserModule } from './user/user.module';
 import { GameCanvasComponent } from './game/game-canvas/game-canvas.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
 import {APP_BASE_HREF, LocationStrategy, HashLocationStrategy} from '@angular/common';
-import { SelectivePreloadStrategy } from './SelectivePreloadStrategy';
+// import { SelectivePreloadStrategy } from './SelectivePreloadStrategy';
 import { BACKEND_URL } from '../environments/environment';
 
 

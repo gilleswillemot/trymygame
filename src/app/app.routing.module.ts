@@ -25,7 +25,7 @@ const appRoutes: Routes = [
   {
     path: 'hiscores',
     loadChildren: 'app/hiscores/hiscore.module#HiscoreModule',
-   data: { preload: true }
+   //data: { preload: true }
   },  
   { path: 'homepage', component: HomepageComponent },
   { path: 'game', canActivate: [AuthGuardService], component: GameCanvasComponent },
@@ -39,14 +39,13 @@ const appRoutes: Routes = [
 @NgModule({
   imports: [
     UserModule,
-   RouterModule.forRoot(appRoutes/*, {preloadingStrategy:  SelectivePreloadStrategy}*/)
-    
+   RouterModule.forRoot(appRoutes,/*, {preloadingStrategy:  SelectivePreloadStrategy}*/ {useHash: true})
   ],
   declarations: [],
   exports: [
     RouterModule
   ],
-  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+  //providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}] zorgt dat "error not found" niet voorkomt bij refresh, # url
   // /*APP_BASE_HREF*//*BACKEND_URL*/, useValue : '/' }/*SelectivePreloadStrategy*/]
 
 })

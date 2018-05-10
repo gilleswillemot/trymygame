@@ -16,7 +16,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { UserModule } from './user/user.module';
 import { GameCanvasComponent } from './game/game-canvas/game-canvas.component';
 import { EditProfileComponent } from './profile/edit-profile/edit-profile.component';
-import {APP_BASE_HREF} from '@angular/common';
+import {APP_BASE_HREF, LocationStrategy, HashLocationStrategy} from '@angular/common';
 import { SelectivePreloadStrategy } from './SelectivePreloadStrategy';
 import { BACKEND_URL } from '../environments/environment';
 
@@ -46,7 +46,8 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  providers: [{provide: /*APP_BASE_HREF*/BACKEND_URL, useValue : '/' }/*SelectivePreloadStrategy*/]
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+  // /*APP_BASE_HREF*//*BACKEND_URL*/, useValue : '/' }/*SelectivePreloadStrategy*/]
 
 })
 export class AppRoutingModule { }

@@ -24,11 +24,9 @@ const appRoutes: Routes = [
   {
     path: 'hiscores',
     loadChildren: 'app/hiscores/hiscore.module#HiscoreModule',
-    data: { preload: true }
+   // data: { preload: true }
   },  
-  { path: 'homepage'/*, canActivate: [AuthGuardService]*/, component: HomepageComponent },
-  //{ path: 'game', canActivate: [AuthGuardService], loadChildren: '../game/game.module#GameModule' },
-  // { path: 'game', component: GameComponent },
+  { path: 'homepage', component: HomepageComponent },
   { path: 'game', canActivate: [AuthGuardService], component: GameCanvasComponent },
   { path: 'info', component: InfoComponent },  
   { path: 'profile', canActivate: [AuthGuardService], component: ProfileComponent },   
@@ -36,17 +34,18 @@ const appRoutes: Routes = [
   { path: '', redirectTo: 'homepage', pathMatch: "full" },
   { path: '**', component: PageNotFoundComponent }
 ];
+
 @NgModule({
   imports: [
     UserModule,
-   RouterModule.forRoot(appRoutes, {preloadingStrategy: SelectivePreloadStrategy})
+   RouterModule.forRoot(appRoutes/*, {preloadingStrategy:  SelectivePreloadStrategy}*/)
     
   ],
   declarations: [],
   exports: [
     RouterModule
   ],
-  providers: [/*{provide: APP_BASE_HREF, useValue : '/' }*/SelectivePreloadStrategy]
+  providers: [/*{provide: APP_BASE_HREF, useValue : '/' }SelectivePreloadStrategy*/]
 
 })
 export class AppRoutingModule { }

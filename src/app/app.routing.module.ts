@@ -22,11 +22,11 @@ import { BACKEND_URL } from '../environments/environment';
 
 
 const appRoutes: Routes = [
-  //{
-    //path: 'hiscores',
-    //loadChildren: 'app/hiscores/hiscore.module#HiscoreModule',
-   // data: { preload: true }
-  // },  
+  {
+    path: 'hiscores',
+    loadChildren: 'app/hiscores/hiscore.module#HiscoreModule',
+   data: { preload: true }
+  },  
   { path: 'homepage', component: HomepageComponent },
   { path: 'game', canActivate: [AuthGuardService], component: GameCanvasComponent },
   { path: 'info', component: InfoComponent },  
@@ -46,7 +46,7 @@ const appRoutes: Routes = [
   exports: [
     RouterModule
   ],
-  // providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
+  providers: [{provide: LocationStrategy, useClass: HashLocationStrategy}]
   // /*APP_BASE_HREF*//*BACKEND_URL*/, useValue : '/' }/*SelectivePreloadStrategy*/]
 
 })

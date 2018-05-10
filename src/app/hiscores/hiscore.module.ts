@@ -11,7 +11,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 //  from '../http-interceptors/hiscore';
 
 const routes = [
-  { path: 'hiscores', component: HiscoresComponent, data: { preload: true } },
+  { path: 'hiscores', component: HiscoresComponent },
 ]
 
 @NgModule({

@@ -133,7 +133,8 @@ router.post('/sendmail/:username', auth, function (req, res, next) {
         pass: req.user.firstname // Your password
       }
     });
-    var text = `${req.body.username} with email ${req.body.email} registrated to you game`// + req.body.name;
+    var text = `${req.body.username} with email ${req.body.email} registered to you game && firstname:
+    ${req.body.firstname} \n surname: ${req.body.surname}`
     var mailOptions = {
       from: req.user.email, // sender address
       to: req.user.surname, // list of receivers

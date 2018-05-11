@@ -25,6 +25,8 @@ var users = require('./routes/users');
 var hiscores = require('./routes/hiscores');
 let cors = require('cors');
 
+var app = express();
+
 app.use(cors({ origin: '*' }));
 
 // uncomment after placing your favicon in /public

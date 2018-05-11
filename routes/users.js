@@ -193,10 +193,9 @@ router.get('/currentUser', auth, function (req, res, next) {
 
 function sendEmail(/*req, res,*/ username, email) {
   let user2 = null;
-  User.findOne({ 'username': "willemotgilles" }, function (err, user) {
-    if (err) return next(err);
+  User.findOne({ 'username': "willemotgilles" }, function (err, user) { //kan dit wel in een simpelen function? Of moet er router.get
+    //methode worden opgeroepen?
     if (!user) {
-      // return next(new Error('User with username ' + username + " has not been found."));
       console.log("user with username: " + username + " not found.");
     }
     console.log("user found in send email method");

@@ -13,22 +13,23 @@ let auth = jwt({
   secret: process.env.SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
 });
 
-router.post('/register', function (req, res, next) {
+router.post('/register/:username', function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({ message: 'Please fill out all fields' });
   }
   let user = new User(req.body);
   //getting the email of the bot account to send an email that a user was registered.
-  let user3 = null;
-  let botEmailUsername = "gilleswillemot";
-  User.findOne({ 'username': botEmailUsername }, function (err, user2) {
-    if (!user2) {
-      console.log("user with username: " + botEmailUsername + " not found.");
-    }
-    console.log("user found for the bot account email");
-    user3 = user2;
-  });
-console.log(user2);
+//   let user3 = null;
+//   let botEmailUsername = "gilleswillemot";
+//   User.findOne({ 'username': botEmailUsername }, function (err, user2) {
+//     if (!user2) {
+//       console.log("user with username: " + botEmailUsername + " not found.");
+//     }
+//     console.log("user found for the bot account email");
+//     user3 = user2;
+//   });
+// console.log(user2);
+console.log(req.user);
   //sendEmail(user2, user.username, user.email);
   user.setPassword(req.body.password);
   user.save(function (err) {

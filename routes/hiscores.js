@@ -61,7 +61,7 @@ router.delete('/delete/:hiscoreId', auth, function (req, res, next) {
     });
   }
   else return next(new Error("You tried to delete the hiscore of " + hiscoreUsername +
-    ", which you have no right to."));
+    ", to which you have no right to."));
   // Hiscore.findOneAndRemove({ _id: req.params.hiscoreId }, function (err, docs) {
   //   if (err) { res.json(err); }
   //   res.json(req.params.hiscoreId);

@@ -20,17 +20,5 @@ export class RegisterComponent implements OnInit {
   constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() { }
-
-  registerNewUser(newUser: User) {
-    this.authenticationService.register(newUser).subscribe(res => {
-      if (res) {
-        console.log("new user registered");
-        this.authenticationService.getCurrentUser().subscribe(user => {
-          console.log("current user: ");
-          console.log(user);
-          this.authenticationService.sendEmail(user);
-        });
-      } else console.log("result is false.");
-    });
-  }
+  //see user-information component, which handles the registration, for more information.
 }

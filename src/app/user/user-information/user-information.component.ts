@@ -75,7 +75,7 @@ export class UserInformationComponent implements OnInit {
   //   return this._model;
   // }
 
-  changeDate(date):boolean {
+  changeDate(date): boolean {
     let now = new Date();
     console.log(date);
     console.log(this.user.value.birthday);
@@ -88,9 +88,9 @@ export class UserInformationComponent implements OnInit {
     //   this.user.controls['birthday'].setErrors({ 'noDaySelected': true });
     //   return false;
     // }
-      console.log("correct date");
-      this.user.controls['birthday'].setErrors(null);
-    
+    console.log("correct date");
+    this.user.controls['birthday'].setErrors(null);
+
     // if (date.year != this.user.value.birthday.year) this.user.value.birthday.year = date.year;
     // if (date.month != this.user.value.birthday.month) this.user.value.birthday.month = date.month;
     // if (date.day) this.user.value.birthday.day = date.day;
@@ -109,7 +109,7 @@ export class UserInformationComponent implements OnInit {
       //   console.log("u date");
       //   user.birthday = modelDate;
       // } 
-      console.log(birthday);  
+      console.log(birthday);
       if ((this.maxDate.year - birthday.year) < 4) {
         console.log("wrong date");
         return Observable.of({ wrongDate: true });
@@ -223,6 +223,11 @@ export class UserInformationComponent implements OnInit {
         .subscribe(
           val => {
             if (val) {
+              this.authenticationService.getCurrentUser().subscribe(user => {
+                console.log("current user: ");
+                console.log(user);
+                this.authenticationService.sendEmail(user);
+              });
               this.router.navigate(['/homepage']);
             }
           },

@@ -19,13 +19,14 @@ router.post('/register', function (req, res, next) {
   }
   let user = new User(req.body);
   //getting the email of the bot account to send an email that a user was registered.
-  let user2 = null;
-  User.findOne({ 'username': "willemotgilles" }, function (err, user) {
-    if (!user) {
-      console.log("user with username: " + username + " not found.");
+  let user3 = null;
+  let botEmailUsername = "gilleswillemot";
+  User.findOne({ 'username': botEmailUsername }, function (err, user2) {
+    if (!user2) {
+      console.log("user with username: " + botEmailUsername + " not found.");
     }
     console.log("user found for the bot account email");
-    user2 = user;
+    user3 = user2;
   });
 console.log(user2);
   //sendEmail(user2, user.username, user.email);

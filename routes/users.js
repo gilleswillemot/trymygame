@@ -125,7 +125,7 @@ router.get('/currentUser', auth, function (req, res, next) {
 
 router.post('/sendEmail/:username', auth, function (req, res, next) {
   console.log("In sendemail method");
-  if (req.user != null) {
+ // if (req.user != null) {
     var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
@@ -150,8 +150,8 @@ router.post('/sendEmail/:username', auth, function (req, res, next) {
         res.json({ yo: info.response });
       };
     });
-  }
-  else return res.status(400).json({ message: 'Could not send mail to site master, bot email user not found.' });
+  //}
+  //else return res.status(400).json({ message: 'Could not send mail to site master, bot email user not found.' });
 });
 
 module.exports = router;

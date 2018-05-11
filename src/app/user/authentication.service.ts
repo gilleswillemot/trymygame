@@ -82,7 +82,7 @@ export class AuthenticationService {
   }
 
   register(newUser: User): Observable<boolean> {
-    return this.http.post(`${this._url}/register/${"gilleswillemot"}`, newUser).pipe(
+    return this.http.post(`${this._url}/register`, newUser).pipe(
       map((res: any) => {
         const token = res.token;
         if (token) {
@@ -96,12 +96,25 @@ export class AuthenticationService {
     );
   }
 
+  sendEmail(newUser: User): Observable<boolean> {
+    return this.http.post(`${this._url, newUser}/sendEmail/${"gilleswillemot"}`, newUser).pipe(
+      map((res: any) => {
+        const result = res;
+        if (result) {
+          return true;
+        } else {
+          return false;
+        }
+      })
+    );
+  }
+
   update(user: User): Observable<boolean> {
       const theUrl = `${this._url}/update/${user.username}`;
       return this.http.post(theUrl, user).pipe(map((res: any) => {
         console.log(res);
         const raw = res;
-        if (user) {
+        if (raw) {
           // localStorage.setItem(this._tokenKey, token);
           // this._user$.next(user.username);
           return true;

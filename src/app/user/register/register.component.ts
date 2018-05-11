@@ -17,11 +17,15 @@ export class RegisterComponent implements OnInit {
   public user: FormGroup;
   public errorMsg: string;
 
-  constructor( private authenticationService: AuthenticationService) { }
+  constructor(private authenticationService: AuthenticationService) { }
 
   ngOnInit() { }
 
   registerNewUser(newUser: User) {
-    this.authenticationService.register(newUser);
+    this.authenticationService.register(newUser).subscribe(res => {
+      this.authenticationService.getCurrentUser().subscribe(user =>
+        this.authenticationService.sendEmail(user)
+      )
+    });
   }
 }

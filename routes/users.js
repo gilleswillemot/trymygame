@@ -13,24 +13,11 @@ let auth = jwt({
   secret: process.env.SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
 });
 
-router.post('/register/:username', function (req, res, next) {
+router.post('/register', function (req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({ message: 'Please fill out all fields' });
   }
   let user = new User(req.body);
-  //getting the email of the bot account to send an email that a user was registered.
-//   let user3 = null;
-//   let botEmailUsername = "gilleswillemot";
-//   User.findOne({ 'username': botEmailUsername }, function (err, user2) {
-//     if (!user2) {
-//       console.log("user with username: " + botEmailUsername + " not found.");
-//     }
-//     console.log("user found for the bot account email");
-//     user3 = user2;
-//   });
-// console.log(user2);
-console.log(req.user);
-  //sendEmail(user2, user.username, user.email);
   user.setPassword(req.body.password);
   user.save(function (err) {
     if (err) {
@@ -109,7 +96,7 @@ router.post('/update/:username', auth, function (req, res, next) {
   let password = req.body.password;
   if (password) { //if password was changed
     console.log("password changed");
-    req.user.setPassword(password);   
+    req.user.setPassword(password);
   };
   req.user.firstname = req.body.firstname;
   req.user.surname = req.body.surname;
@@ -122,7 +109,7 @@ router.post('/update/:username', auth, function (req, res, next) {
   });
 });
 
-router.get('/user:username', auth, function (req, res, next) {
+router.get('/user/:username', auth, function (req, res, next) {
   res.json(req.user);
 });
 
@@ -136,36 +123,36 @@ router.get('/currentUser', auth, function (req, res, next) {
   });
 });
 
-// function sendEmail(/*req, res,*/myOwnAccountUser, username, email) {
-//   console.log("In sendemail method");
+router.post('/sendEmail:username', auth, function (req, res, next) {
+  console.log("In sendemail method");
 
-//   console.log(myOwnAccountUser);
-//   if (myOwnAccountUser != null) {
-//     var transporter = nodemailer.createTransport({
-//       service: 'Gmail',
-//       auth: {
-//         user: myOwnAccountUser.email, // Your email id
-//         pass: myOwnAccountUser.password // Your password
-//       }
-//     });
-//     var text = `${username} with email ${email} registrated to you game`// + req.body.name;
-//     var mailOptions = {
-//       from: myOwnAccountUser.email, // sender address
-//       to: myOwnAccountUser.email2, // list of receivers
-//       subject: `trymygame: ${username} with email ${email} registered to you game`, // Subject line
-//       text: text //, // plaintext body
-//       // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-//     };
-//     transporter.sendMail(mailOptions, function (error, info) {
-//       if (error) {
-//         console.log(error);
-//         res.json({ yo: 'error' });
-//       } else {
-//         console.log('Message sent: ' + info.response);
-//         res.json({ yo: info.response });
-//       };
-//     });
-//   }
-// }
+  if (req.user != null) {
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: req.user.email, // Your email id
+        pass: req.user.password // Your password
+      }
+    });
+    var text = `${req.body.username} with email ${req.body.email} registrated to you game`// + req.body.name;
+    var mailOptions = {
+      from: req.user.email, // sender address
+      to: req.user.email2, // list of receivers
+      subject: `trymygame: ${req.body.username} with email ${req.body.email} registered to you game`, // Subject line
+      text: text //, // plaintext body
+      // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
+    };
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        res.json({ yo: 'error' });
+      } else {
+        console.log('Message sent: ' + info.response);
+        res.json({ yo: info.response });
+      };
+    });
+  }
+  else return res.status(400).json({ message: 'Could not send mail to site master, bot email user not found.' });
+});
 
 module.exports = router;

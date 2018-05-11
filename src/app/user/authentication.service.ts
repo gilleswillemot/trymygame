@@ -67,9 +67,9 @@ export class AuthenticationService {
       .pipe(map(User.fromJSON));
   }
 
-  // getUser(): Observable<User> {
+  // getUser(username): Observable<User> {
   //   return this.http
-  //   .get(`${this._url}/user/${id}`)
+  //   .get(`${this._url}/user/${username}`)
   //   .pipe(map(User.fromJSON));
 
   // }

@@ -7,8 +7,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AlertModule } from '../alert/alert.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-// import { basehttpInterceptorProviders, httpInterceptorProviders  }
-//  from '../http-interceptors/hiscore';
+import { basehttpInterceptorProviders, httpInterceptorProviders  }
+from '../http-interceptors/hiscore';
 
 const routes = [
   { path: 'hiscores', component: HiscoresComponent, data: { preload: true } },
@@ -27,8 +27,8 @@ const routes = [
     HiscoresComponent
   ],
   providers: [
-    // httpInterceptorProviders,
-    // basehttpInterceptorProviders,// temporarly in comment ->Cannot instantiate cyclic dependency! 
+    httpInterceptorProviders,
+    basehttpInterceptorProviders,// temporarly in comment ->Cannot instantiate cyclic dependency! 
    //InjectionToken_HTTP_INTERCEPTORS ("[ERROR ->]"): in NgModule AppModule in ./AppModule@-1:-1
   //error with the ngbmodule in appmodule  SOLUTION: npm install (angular fixed this issue)
     HiscoreDataService

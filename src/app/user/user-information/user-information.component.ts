@@ -223,12 +223,13 @@ export class UserInformationComponent implements OnInit {
         .subscribe(
           val => {
             if (val) {
-              this.authenticationService.getCurrentUser().subscribe(user => {
-                console.log("current user: ");
-                console.log(user);
-                this.authenticationService.sendEmail(user);
-              });
-              this.router.navigate(['/homepage']);
+              // this.authenticationService.getCurrentUser().subscribe(user => {
+              //   console.log("current user: ");
+              //   console.log(user);
+              this.authenticationService.sendEmail(user).subscribe(
+                res => this.router.navigate(['/homepage'])
+              );
+              // });
             }
           },
           (error: HttpErrorResponse) => {

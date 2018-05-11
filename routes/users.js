@@ -8,7 +8,6 @@ var nodemailer = require('nodemailer');
 // var router = express.Router();
 // app.use('/sayHello', router);
 // router.post('/', handleSayHello); // handle the route at yourdomain.com/sayHello
-// var app = express();
 
 let auth = jwt({
   secret: process.env.SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
@@ -20,8 +19,19 @@ router.post('/register', function (req, res, next) {
     return res.status(400).json({ message: 'Please fill out all fields' });
   }
   let user = new User(req.body);
+  //getting the email of the bot account to send an email that a user was registered.
+  let user2 = null;
+  User.findOne({ 'username': "willemotgilles" }, function (err, user) { //kan dit wel in een simpelen function? Of moet er router.get
+    //methode worden opgeroepen?
+    if (!user) {
+      console.log("user with username: " + username + " not found.");
+    }
+    console.log("user found for the bot account email");
+    user2 = user;
+    // res.json(user);
+  });
 
-  sendEmail(user.username, user.email);
+  sendEmail(user2, user.username, user.email);
   // user.creationDate = req.body.creationDate;
   // user.username = req.body.username;
   // user.birthday = req.body.birthday;
@@ -191,42 +201,36 @@ router.get('/currentUser', auth, function (req, res, next) {
   });
 });
 
-function sendEmail(/*req, res,*/ username, email) {
-  let user2 = null;
-  User.findOne({ 'username': "willemotgilles" }, function (err, user) { //kan dit wel in een simpelen function? Of moet er router.get
-    //methode worden opgeroepen?
-    if (!user) {
-      console.log("user with username: " + username + " not found.");
-    }
-    console.log("user found in send email method");
-    user2 = user;
-    // res.json(user);
-  });
-  console.log(user2);
-  var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-      user: user2.email, // Your email id
-      pass: user2.password // Your password
-    }
-  });
-  var text = `${username} with email ${email} registrated to you game`// + req.body.name;
-  var mailOptions = {
-    from: user2.email, // sender address
-    to: user2.email2, // list of receivers
-    subject: `trymygame: ${username} with email ${email} registered to you game`, // Subject line
-    text: text //, // plaintext body
-    // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
-  };
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log(error);
-      res.json({ yo: 'error' });
-    } else {
-      console.log('Message sent: ' + info.response);
-      res.json({ yo: info.response });
+function sendEmail(/*req, res,*/myOwnAccountUser, username, email) {
+  console.log("In sendemail method");
+
+  console.log(myOwnAccountUser);
+  if (myOwnAccountUser != null) {
+    var transporter = nodemailer.createTransport({
+      service: 'Gmail',
+      auth: {
+        user: myOwnAccountUser.email, // Your email id
+        pass: myOwnAccountUser.password // Your password
+      }
+    });
+    var text = `${username} with email ${email} registrated to you game`// + req.body.name;
+    var mailOptions = {
+      from: myOwnAccountUser.email, // sender address
+      to: myOwnAccountUser.email2, // list of receivers
+      subject: `trymygame: ${username} with email ${email} registered to you game`, // Subject line
+      text: text //, // plaintext body
+      // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
     };
-  });
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+        res.json({ yo: 'error' });
+      } else {
+        console.log('Message sent: ' + info.response);
+        res.json({ yo: info.response });
+      };
+    });
+  }
 }
 
 // router.post('/:userId/kleur', function (req, res) {

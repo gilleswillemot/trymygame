@@ -263,16 +263,13 @@ export class GameCanvasComponent implements OnInit, OnChanges {
             //p.draw = () => this.draw(p);
 
         }
-        console.log(s);
         this._p5Object = new p5(s);
-        console.log(this._p5Object);
     }
 
     private setup(p) {
         let canvas = p.createCanvas(800, 400);
         //  this.centerCanvas(p);
         canvas.parent('sketch-holder');
-        console.log(canvas);
     }
 
     private initiateGameAttributes(p) {

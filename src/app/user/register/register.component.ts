@@ -30,7 +30,7 @@ export class RegisterComponent implements OnInit {
           console.log(user);
           this.authenticationService.sendEmail(user);
         });
-      }
+      } else console.log("result is false.");
     });
   }
 }

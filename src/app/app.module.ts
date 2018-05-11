@@ -48,7 +48,6 @@ import { EditProfileComponent } from './profile/edit-profile/edit-profile.compon
     UserModule,
     AlertModule,
     HiscoreModule,
-
     AppRoutingModule //always as last import
   ],
   providers: [/*basehttpInterceptorProviders,

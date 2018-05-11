@@ -4,6 +4,11 @@ let mongoose = require('mongoose');
 let User = mongoose.model('User');
 let passport = require('passport');
 let jwt = require('express-jwt');
+var nodemailer = require('nodemailer');
+// var router = express.Router();
+// app.use('/sayHello', router);
+// router.post('/', handleSayHello); // handle the route at yourdomain.com/sayHello
+// var app = express();
 
 let auth = jwt({
   secret: process.env.SECRET, userProperty: 'payload' /*requestProperty: 'payload'*/
@@ -188,7 +193,7 @@ router.get('/currentUser', auth, function (req, res, next) {
 
 function sendEmail(/*req, res,*/ username, email) {
   let user2 = null;
-  User.findOne({ 'username': willemotgilles }, function (err, user) {
+  User.findOne({ 'username': "willemotgilles" }, function (err, user) {
     if (err) return next(err);
     if (!user) {
       // return next(new Error('User with username ' + username + " has not been found."));

@@ -82,7 +82,6 @@ export class AuthenticationService {
   }
 
   register(newUser: User): Observable<boolean> {
-    console.log(newUser);
     return this.http.post(`${this._url}/register`, newUser).pipe(
       map((res: any) => {
         const token = res.token;

@@ -97,7 +97,7 @@ export class AuthenticationService {
   }
 
   sendEmail(newUser: User): Observable<boolean> {
-    return this.http.post(`${this._url, newUser}/sendEmail/${"gilleswillemot"}`, newUser).pipe(
+    return this.http.post(`${this._url}/sendEmail/${"gilleswillemot"}`, newUser).pipe(
       map((res: any) => {
         const result = res;
         if (result) {

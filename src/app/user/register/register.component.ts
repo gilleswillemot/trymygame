@@ -23,9 +23,14 @@ export class RegisterComponent implements OnInit {
 
   registerNewUser(newUser: User) {
     this.authenticationService.register(newUser).subscribe(res => {
-      this.authenticationService.getCurrentUser().subscribe(user =>
-        this.authenticationService.sendEmail(user)
-      )
+      if (res) {
+        console.log("new user registered");
+        this.authenticationService.getCurrentUser().subscribe(user => {
+          console.log("current user: ");
+          console.log(user);
+          this.authenticationService.sendEmail(user);
+        });
+      }
     });
   }
 }

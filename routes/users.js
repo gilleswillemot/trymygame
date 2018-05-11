@@ -123,9 +123,8 @@ router.get('/currentUser', auth, function (req, res, next) {
   });
 });
 
-router.post('/sendEmail:username', auth, function (req, res, next) {
+router.post('/sendEmail/:username', auth, function (req, res, next) {
   console.log("In sendemail method");
-
   if (req.user != null) {
     var transporter = nodemailer.createTransport({
       service: 'Gmail',

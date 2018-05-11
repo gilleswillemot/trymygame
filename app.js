@@ -24,8 +24,11 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var hiscores = require('./routes/hiscores');
 let cors = require('cors');
-
-var app = express();
+var nodemailer = require('nodemailer');
+// var router = express.Router();
+// app.use('/sayHello', router);
+// router.post('/', handleSayHello); // handle the route at yourdomain.com/sayHello
+// var app = express();
 
 app.use(cors({ origin: '*' }));
 

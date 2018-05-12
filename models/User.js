@@ -31,6 +31,10 @@ UserSchema.methods.validPassword = function(password) {
   return this.hash === hash;
 };
 
+UserSchema.methods.getPassword = function() {
+  let hash = crypto.pd
+}
+
 UserSchema.methods.generateJWT = function() {
   var today = new Date();
   var exp = new Date(today);

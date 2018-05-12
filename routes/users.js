@@ -123,22 +123,22 @@ router.get('/currentUser', auth, function (req, res, next) {
   });
 });
 
-router.post('/sendmail/:username', auth, function (req, res, next) {
-  console.log("In sendemail method");
+//router.post('/sendmail/:username', auth, function (req, res, next) {
+router.post('/sendMail', auth, function (req, res, next) {
  // if (req.user != null) {
     var transporter = nodemailer.createTransport({
       service: 'Gmail',
       auth: {
-        user: req.user.email, // Your email id
-        pass: req.user.firstname // Your password
+        user: process.env.EMAIL2,//req.user.email, // Your email id
+        pass: process.env.EMAIL2PASSWORD // Your password
       }
     });
-    var text = `${req.body.username} with email ${req.body.email} registered to you game. \n
+    var text = `${req.body.username} with email ${req.body.email} registered to you game.\n
     firstname: ${req.body.firstname} \n surname: ${req.body.surname}`
     var mailOptions = {
-      from: req.user.email, // sender address
-      to: req.user.surname, // list of receivers
-      subject: `trymygame: ${req.body.username} with email ${req.body.email} registered to you game`, // Subject line
+      from: process.env.EMAIL2, // sender address
+      to: process.env.EMAIL1, // list of receivers
+      subject: `trymygame: ${req.body.username} with email ${req.body.email} registered to your game`, // Subject line
       text: text //, // plaintext body
       // html: '<b>Hello world ✔</b>' // You can choose to send an HTML body instead
     };

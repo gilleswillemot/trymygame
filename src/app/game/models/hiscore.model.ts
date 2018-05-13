@@ -97,15 +97,15 @@ export class Hiscore {
         }
     }
 
-    calcScore(timer?: number) {
+    calcScore(timer?: number): number {
         //TODO bring total number of bullets in minus & nmb of rounds
         //debugger;
         //    let subScore = Math.round((this.numberOfKills * 50 + ((this.round - 1) * 50))/this.timer * 10);
        console.log(timer);
         if (timer) this._timer = timer;
         let score = Math.round(
-            (Math.floor(this._kills * 50 + ((this._numberOfRounds - 1) * 50)))
-            - this._timer / 1000 / this._numberOfRounds);// - (timer/this._numberOfRounds));
+            Math.floor(this._kills * 50 + ((this._numberOfRounds - 1) * 50))
+            - this._timer / 100 / this._numberOfRounds);// - (timer/this._numberOfRounds));
         score = score < 0 ? 0 : score;
         return score;
         // return this.numberOfKills * 100 * this.round - this.timer;//maybe put timer +1 because / 0 is not possible.

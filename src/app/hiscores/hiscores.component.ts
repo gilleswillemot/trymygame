@@ -89,7 +89,7 @@ export class HiscoresComponent implements OnInit {
     if (score > 700) text = "ME ME ME mEEEET YOUR MAKER!";
     else if (score > 400) text = "Ki ki killlllllling spree!";
     else if (score > 299) text = "Not bad...For a newbie";
-    else text = "Could this be worse?";
+    else text = "Could this be any worse?";
     return text;
   }
 

@@ -5,7 +5,7 @@ import { By } from '@angular/platform-browser';
 import { HiscoresComponent } from '../../hiscores/hiscores.component';
 import { NgbModule, NgbAlert, NgbAlertConfig } from '@ng-bootstrap/ng-bootstrap';
 import { HiscoreDataService } from '../../hiscores/hiscore-data.service';
-import { HttpClient } from 'selenium-webdriver/http';
+// import { HttpClient } from 'selenium-webdriver/http';
 import { HttpClientModule } from '@angular/common/http';
 import { AuthenticationService } from '../../user/authentication.service';
 //import { AbstractMockObservableService } from '../../AbstractMockObservable.service';
@@ -67,10 +67,10 @@ describe('GameCanvasComponent', () => {
   //   expect(app.numberOfBulletsLeft()).toEqual('12');
   // }));
 
-  it("should do a call on the onGameButtonClick method when something called", function() {
-    component.onGameButtonClick();
-    expect(component.onGameButtonClick()).toHaveBeenCalled();
-  });
+  // it("should do a call on the onGameButtonClick method when something called", function() {
+  //   component.onGameButtonClick();
+  //   expect(component.onGameButtonClick()).toHaveBeenCalled();
+  // });
   
   it('should create', () => {
     expect(component).toBeTruthy();

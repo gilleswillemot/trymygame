@@ -294,7 +294,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         clearInterval(this._timerObject);
         this._p5Object.noLoop();
         this.freezeKeys();
-        this._hiscore.calcScore(this._timer);
+       console.log(this._hiscore.calcScore(this._timer));
         console.log("game over");
         this._hiscoreDataService.addNewHiscore(this._hiscore).subscribe(
             item => (this._bestHiscore = item),

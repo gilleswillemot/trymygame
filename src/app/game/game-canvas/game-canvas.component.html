@@ -24,7 +24,7 @@
     <!-- <div *ngIf='errorMsg' class="">{{errorMsg}}</div> -->
     <div class="col-6" *ngIf="bestHiscore; else noHiscoreYet">
       <ngb-alert *ngIf="!staticAlertClosed" (close)="staticAlertClosed = true">
-        Your personal record highscore: <b>{{bestHiscore.score}}</b>, on {{bestHiscore.getFormattedDate()}}.
+        Your personal record highscore: <b>{{bestHiscore.calcScore()}}</b>, on {{bestHiscore.getFormattedDate()}}.
       </ngb-alert>
 
     </div>

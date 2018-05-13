@@ -42,8 +42,8 @@
                   <i>Not bad... For a newbie</i>
                 </span>
               </div>
-              <div>
-                {{username}}
+              <div class="col-md-3 col-sm-4">
+                <b>{{hiscore.username}}</b>
               </div>
               <div *ngIf="hiscore.username == username" class="col-1">
                 <a style="font-size:1.7em; color:red" class="float-right" (click)="onRemoveButtonClick(hiscore.id)">

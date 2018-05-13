@@ -15,14 +15,12 @@
         <ngb-panel id="hiscore" id="{{i}}" *ngFor="let hiscore of hiscores; let i = index">
           <ng-template ngbPanelTitle>
             <div id="hiscore" class="row">
-              <div class="col-md-1 col-sm-2">
+              <div class="col-1">
                 <p>
                   <b>{{i+1}}.</b>
                 </p>
               </div>
-              <div class="col-md-7 col-sm-5">
-
-
+              <div class="col-7">
                 <span>
                   <b>{{hiscore.calcScore()}}</b>
                 </span>
@@ -42,7 +40,7 @@
                   <i>Not bad... For a newbie</i>
                 </span>
               </div>
-              <div class="col-md-3 col-sm-4">
+              <div class="col-3">
                 <b>{{hiscore.username}}</b>
               </div>
               <div *ngIf="hiscore.username == username" class="col-1">

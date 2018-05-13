@@ -101,6 +101,7 @@ export class Hiscore {
         //TODO bring total number of bullets in minus & nmb of rounds
         //debugger;
         //    let subScore = Math.round((this.numberOfKills * 50 + ((this.round - 1) * 50))/this.timer * 10);
+       console.log(timer);
         if (timer) this._timer = timer;
         let score = Math.round(
             (Math.floor(this._kills * 50 + ((this._numberOfRounds - 1) * 50)))
@@ -114,7 +115,7 @@ export class Hiscore {
         return {
             _id: this._id,
             // score: this._score,
-            _timer: this._timer,
+            timer: this._timer,
             numberOfRounds: this._numberOfRounds,
             kills: this._kills,
             username: this._username,

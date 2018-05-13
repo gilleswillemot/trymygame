@@ -8,27 +8,27 @@ enum WeaponType {
 }
 
 export class Weapon {
-    
-    constructor(private _type:string,  private _x:number, private _y:number, private _direction:string,
-        private _weaponWidth?:number, private _weaponLength?:number, private _xLength?:number,
-        private _yLength?:number, private _bullets?:Bullet[]){
+
+    constructor(private _type: string, private _x: number, private _y: number, private _direction: string,
+        private _weaponWidth?: number, private _weaponLength?: number, private _xLength?: number,
+        private _yLength?: number, private _bullets?: Bullet[]) {
         this._bullets = [];
         this._weaponLength = 20;
         this._weaponWidth = 4;
         this._xLength = this._weaponLength;
         this._yLength = this._weaponWidth;
-       // this._type = "Glock";
+        // this._type = "Glock";
     }
 
-    get weaponType(){
+    get weaponType() {
         return WeaponType.Handgun;
     }
 
-    public canPersevere(): boolean{
+    public canPersevere(): boolean {
         return this.weaponType != WeaponType.Handgun;
     }
 
-    get name(){
+    get name() {
         return this._type;
     }
 
@@ -59,9 +59,9 @@ export class Weapon {
             console.log("Your weapon has no bullets left.");
         }
         else {
-            console.log("*Bullet shot sound*");            
+            console.log("*Bullet shot sound*");
             return this.bullets.pop();
-            
+
             /* This probably only works in sketch.js:  
              *             let shot = bullets.pop();
              *             shot.show();
@@ -72,7 +72,7 @@ export class Weapon {
     /*
     * Puts the weapon in the direction that the player is moving to.
     */
-   setDir(direction) {
+    setDir(direction) {
         this.direction = direction;
         switch (this.direction) {
             case "N": this.xLength = this.weaponWidth; this.yLength = this.weaponLength * -1; break;// *-1 to let it appear going north
@@ -84,73 +84,75 @@ export class Weapon {
         }
     };
 
-    get weaponLength(){
+    get weaponLength() {
         return this._weaponLength;
     }
 
-    get weaponWidth(){
+    get weaponWidth() {
         return this._weaponWidth;
     }
 
-    get xLength(){
+    get xLength() {
         return this._xLength;
     }
 
-    set xLength(xLength){
+    set xLength(xLength) {
         this._xLength = xLength;
     }
-    get yLength(){
+    get yLength() {
         return this._yLength;
     }
 
-    set yLength(yLength){
+    set yLength(yLength) {
         this._yLength = yLength;
     }
 
 
-    get bullets(){
+    get bullets() {
         return this._bullets;
     }
 
-    get direction(){
+    get direction() {
         return this._direction;
     }
 
-    set direction(dir:string){
+    set direction(dir: string) {
         this._direction = dir;
     }
 
-    get x(){
+    get x() {
         return this._x;
     }
 
-    get y(){
+    get y() {
         return this._y;
     }
 
-    set x(xCoordinate){
+    set x(xCoordinate) {
         this._x = xCoordinate;
     }
 
-    set y(yCoordinate){
+    set y(yCoordinate) {
         this._y = yCoordinate;
     }
 
-    getNumberOfBulletsLeft(){
+    getNumberOfBulletsLeft() {
         return this._bullets.length;
     }
 
-move(x, y){
-    this.x = x;
-    this.y = y;
-}
-
-reload(numberOfBullets:number){
-    let bulletsLeft = this.getNumberOfBulletsLeft();
-    for (let i = 0; i < numberOfBullets; i++) {
-        this.bullets.push(new Bullet(`bullet ${bulletsLeft + i}`, ));
-        //let bullets = this.weapon.bullets;
-        //bullets[i] = new Bullet(`bullet ${i}`);
+    move(x, y) {
+        this.x = x;
+        this.y = y;
     }
-}
+
+    reload(numberOfBullets: number) {
+        if (this.getNumberOfBulletsLeft() != 12) {
+            let bulletsLeft = this.getNumberOfBulletsLeft();
+            for (let i = 0; i < numberOfBullets; i++) {
+                this.bullets.push(new Bullet(`bullet ${bulletsLeft + i}`, ));
+                //let bullets = this.weapon.bullets;
+                //bullets[i] = new Bullet(`bullet ${i}`);
+            }
+        }
+    }
 }//Einde class Weapon

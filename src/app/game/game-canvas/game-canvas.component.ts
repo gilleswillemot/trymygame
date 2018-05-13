@@ -299,9 +299,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         this._hiscoreDataService.addNewHiscore(this._hiscore).subscribe(
             item => (this._bestHiscore = item),
             (error: HttpErrorResponse) => {
-                this.errorMsg = `Error ${error.status} while adding hiscore with score: ${
-                    this._hiscore.score
-                    }: ${error.error}`;
+                this.errorMsg = `Error ${error.status} while adding hiscore to database: ${error.error}`;
             }
         );
         this._gameOver = true;
@@ -347,6 +345,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
                 if (bullet.hits(p, bot)) {
                     console.log("You shot " + bot.name + " .");
                     this._hiscore.kills++;
+                    this._weapon.reload(1);//add 1 bullet after hitting a bot.
                     this.deleteObjectFromArray(this._bots, j, 1);
                     if (this._bots.length === 0) {
                         console.log("end of round!!!");

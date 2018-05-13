@@ -20,11 +20,11 @@
                   <b>{{i+1}}.</b>
                 </p>
               </div>
-              <div class="col-md-10 col-sm-9">
+              <div class="col-md-7 col-sm-5">
 
 
                 <span>
-                  <b>{{hiscore.score}}</b>
+                  <b>{{hiscore.calcScore()}}</b>
                 </span>
                 &nbsp; &nbsp; &nbsp;
                 <span *ngIf="hiscore.score < 300">
@@ -41,6 +41,9 @@
                 <span *ngIf="hiscore.score > 299 && 401 > hiscore.score">
                   <i>Not bad... For a newbie</i>
                 </span>
+              </div>
+              <div>
+                {{username}}
               </div>
               <div *ngIf="hiscore.username == username" class="col-1">
                 <a style="font-size:1.7em; color:red" class="float-right" (click)="onRemoveButtonClick(hiscore.id)">

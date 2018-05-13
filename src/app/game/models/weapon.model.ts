@@ -145,9 +145,10 @@ move(x, y){
     this.y = y;
 }
 
-reload(){
-    for (let i = 0; i < 12; i++) {
-        this.bullets.push(new Bullet(`bullet ${i}`, ));
+reload(numberOfBullets:number){
+    let bulletsLeft = this.getNumberOfBulletsLeft();
+    for (let i = 0; i < numberOfBullets; i++) {
+        this.bullets.push(new Bullet(`bullet ${bulletsLeft + i}`, ));
         //let bullets = this.weapon.bullets;
         //bullets[i] = new Bullet(`bullet ${i}`);
     }

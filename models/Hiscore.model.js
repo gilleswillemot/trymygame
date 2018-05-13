@@ -1,7 +1,8 @@
 let mongoose = require('mongoose');
   
 let HiscoreSchema = new mongoose.Schema({
-  score: Number,
+  // score: Number,
+  timer: Number,
   numberOfRounds: Number,
   kills: Number, 
   username: String,

@@ -82,7 +82,7 @@ router.get('/bestHiscore/', auth, function (req, res, next/*, id*/) {
   //console.log(auth);
   let query = Hiscore
     .findOne({ username: username })
-    .sort('-score');
+    .sort('-kills').sort('-numberOfRounds').sort('+timer');
 
   query.exec(function (err, hiscore) {
     console.log("in query");

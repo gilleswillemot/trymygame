@@ -24,7 +24,7 @@ export class Player {
     };
 
     loadWeapon() {
-      this.weapon.reload();
+      this.weapon.reload(12);
       console.log("Your weapon is stocked and loaded with " + this.weapon.getNumberOfBulletsLeft() + " bullets");
       
     };

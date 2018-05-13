@@ -84,8 +84,17 @@ export class HiscoresComponent implements OnInit {
     this.hiscoreId = "";
   }
 
+  public scoreText(score: number): string {
+    let text = "";
+    if (score > 700) text = "ME ME ME mEEEET YOUR MAKER!";
+    else if (score > 400) text = "Ki ki killlllllling spree!";
+    else if (score > 299) text = ">Not bad...For a newbie";
+    else text = "Could this be worse?";
+    return text;
+  }
+
   public onRemoveButtonClick(hiscoreId: string) {
     this.removeButtonClicked = true;
     this.hiscoreId = hiscoreId;
-  }  
+  }
 }

@@ -134,7 +134,7 @@ router.post('/sendMail', auth, function (req, res, next) {
       }
     });
     var text = `${req.body.username} with email ${req.body.email} registered to you game.\n
-    firstname: ${req.body.firstname} \n surname: ${req.body.surname}`
+    firstname: ${req.body.firstname}\nsurname: ${req.body.surname}`
     var mailOptions = {
       from: process.env.EMAIL2, // sender address
       to: process.env.EMAIL1, // list of receivers

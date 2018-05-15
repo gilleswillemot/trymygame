@@ -5,7 +5,8 @@
         <div class="card-body">
             <div class="text-center">
                 <h4>
-                    Welcome to the homepage of the game / website of Gilles Willemot.
+                        Welcome to the homepage
+                    <!--  of the game / website of Gilles Willemot. -->
                 </h4>
                 <p>
                     Please enjoy the game and have fun!
@@ -13,7 +14,7 @@
             </div>
             <br>
             <br>
-            <p>Hello, <b>{{username}}</b>! Are you ready for a <a routerLink="/game">game</a>?</p>
+            <p>Hello<span *ngIf="username">, <b>{{username}}</b></span>! Are you ready for a <a routerLink="/game">game</a>?</p>
             <p>You'd better check out the  <a routerLink="/hiscores">highscores</a> to look if you're still a top tier player...</p>
             <!-- <div class="row offset-2">
                 <div class="col-4">

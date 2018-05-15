@@ -93,13 +93,12 @@ export class GameCanvasComponent implements OnInit, OnChanges {
                 this.errorMsg = `${error.error} Hurry in getting one soon!`;
             }
         );
-        console.log(this._bestHiscore);
     }
 
     onGameButtonClick() {
         this.staticAlertClosed = true;
         if (this._gameStarted) {
-            console.log("game is starteddddd");
+            console.log("game has starteddddd");
             if (this._gameOver) this.restart();
             else this.pauseGame();
         } else {
@@ -294,7 +293,7 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         clearInterval(this._timerObject);
         this._p5Object.noLoop();
         this.freezeKeys();
-       console.log(this._hiscore.calcScore(this._timer));
+        console.log(this._hiscore.calcScore(this._timer));
         console.log("game over");
         this._hiscoreDataService.addNewHiscore(this._hiscore).subscribe(
             item => (this._bestHiscore = item),
@@ -383,9 +382,12 @@ export class GameCanvasComponent implements OnInit, OnChanges {
     }
 
     private endOfRound() {
-        console.log("end of rounddddddddddddddddddddddddddddddd");
+        console.log(`End of round ${this._hiscore.numberOfRounds}.`);
         this._hiscore.numberOfRounds++;
-        if (this._hiscore.numberOfRounds < 5) this.setDirectionInterval(this._dInterval * 0.9);
+        if (this._hiscore.numberOfRounds < 5) {
+            this._bots.forEach(bot => bot.radius * 0.9);
+            this.setDirectionInterval(this._dInterval * 0.9);
+        }
         this.setMovebotsInterval(this._mInterval * 0.9);
         this.initiateGameAttributes(this._p5Object);
     }
@@ -427,19 +429,15 @@ export class GameCanvasComponent implements OnInit, OnChanges {
             case 81: this.shoot("W"); break;
             case p.RIGHT_ARROW:
                 this._player.direction = "E";
-                console.log("keycode " + p.keyCode);
                 break;
             case p.LEFT_ARROW:
                 this._player.direction = "W";
-                console.log("keycode " + p.keyCode);
                 break;
             case p.UP_ARROW:
                 this._player.direction = "N";
-                console.log("keycode " + p.keyCode);
                 break;
             case p.DOWN_ARROW:
                 this._player.direction = "S";
-                console.log("keycode " + p.keyCode);
                 break;
             case p.DOWN_ARROW && p.RIGHT_ARROW:
             case p.RIGHT_ARROW && p.DOWN_ARROW:

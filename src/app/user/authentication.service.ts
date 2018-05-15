@@ -115,7 +115,6 @@ export class AuthenticationService {
   update(user: User): Observable<boolean> {
       const theUrl = `${this._url}/update/${user.username}`;
       return this.http.post(theUrl, user).pipe(map((res: any) => {
-        console.log(res);
         const raw = res;
         if (raw) {
           // localStorage.setItem(this._tokenKey, token);

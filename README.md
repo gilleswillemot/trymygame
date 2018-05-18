@@ -1,7 +1,8 @@
 # trymygame
-This is a game that I created by using the MEAN stack, ngbootstrap (javascript), bootstrap (css) and 
-the <a href="https://p5js.org/">p5 library<a/>
-<br/>Feel free to try it out <a href="https://trymygame.herokuapp.com" target="_blank">here.<a/> (https://trymygame.herokuapp.com/)
+This is a game that I created by using the MEAN stack for the app (front- and backend), ngbootstrap (javascript) & bootstrap (css) for the layout and the <a href="https://p5js.org/">p5 library<a/> for the game (2D).
+<br/>Feel free to try it out <a href="https://trymygame.herokuapp.com" target="_blank">here<a/> and to make adjustments & improvements via pushes to this repository.
+<br/>
+URL to the application if the link does not work: https://trymygame.herokuapp.com/
 <br/><br/>
   Contributors:<br/>
   Pieter Van Der Helst (teacher) <br/>

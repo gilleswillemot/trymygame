@@ -32,6 +32,6 @@ describe('HomepageComponent', () => {
     const fixture = TestBed.createComponent(HomepageComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h4').textContent).toContain('Welcome to the homepage of the game / website of Gilles Willemot.');
+    expect(compiled.querySelector('h4').textContent).toContain('Welcome to the homepage');
   }));
 });

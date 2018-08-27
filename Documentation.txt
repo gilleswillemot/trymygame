@@ -6,10 +6,16 @@ Om te pushen naar heroku master moet de file trymygame\.git\config aangevuld wor
 
 Vervolgens kan via bash de nieuwe wijzigingen gepushed worden naar de Heroku repo via command: "$ git push heroku master"
 
-#############
+####################################################
 
-in package.json, voeg volgende toe om simultaan back en front end te runnen:
+
+
+in package.json, voeg volgende toe aan "scripts" om simultaan back en front end te runnen:
 
 "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
         "client": "ng serve --proxy-config proxy.config.json",
         "server": "nodemon ./bin/www",
+
+en vervolgens nog volgende bij "devDependencies": 
+        "concurrently": "^3.5.1",
+

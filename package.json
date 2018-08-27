@@ -6,7 +6,9 @@
     "scripts": {
         "ng": "ng",
         "startdev": "ng serve --proxy-config proxy.conf.json",
-        "start": "node ./bin/www ng serve",
+        "start": "concurrently --kill-others \"npm run client\" \"npm run server\"",
+        "client": "ng serve --proxy-config proxy.config.json",
+        "server": "nodemon ./bin/www",
         "build": "ng build",
         "test": "ng test",
         "lint": "ng lint",
@@ -68,6 +70,7 @@
     "devDependencies": {
         "@types/jasmine": "^2.8.7",
         "ts-node": "~3.2.0",
-        "@types/node": "^6.0.101"
+        "@types/node": "^6.0.101",
+        "concurrently": "^3.5.1"
     }
 }

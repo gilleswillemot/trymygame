@@ -10,7 +10,7 @@
 ## voor de betrokken model(s), want er wordt geen foutmelding gegeven hieromtrent. ###
 ######################################################################################*/
 
-import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, OnChanges, SimpleChange, SimpleChanges, OnDestroy } from '@angular/core';
 import { Bot } from '../models/bot.model';
 import { Bullet } from '../models/bullet.model';
 import { Weapon } from '../models/weapon.model';
@@ -28,7 +28,10 @@ declare var p5: any;
     templateUrl: './game-canvas.component.html',
     styleUrls: ['./game-canvas.component.css']
 })
-export class GameCanvasComponent implements OnInit, OnChanges {
+export class GameCanvasComponent implements OnInit, OnDestroy {
+    ngOnDestroy(): void {
+        this._p5Object.remove();
+    }
 
     private _player: Player;
     private _bots: Bot[];
@@ -75,13 +78,13 @@ export class GameCanvasComponent implements OnInit, OnChanges {
         this.setDirectionInterval(500);
     }//einde ngOnInit
 
-    ngOnChanges(changes: SimpleChanges): void {
-        const hiscore: SimpleChange = changes["_hiscore"];
-        if (!hiscore.isFirstChange()) {
-            console.log("11111111EKKEKEKEKEKKEKKEhiscore kills changed");
-            this._numberOfKills = this._hiscore.kills;
-        }
-    }
+    // ngOnChanges(changes: SimpleChanges): void {
+    //     const hiscore: SimpleChange = changes["_hiscore"];
+    //     if (!hiscore.isFirstChange()) {
+    //         console.log("11111111EKKEKEKEKEKKEKKEhiscore kills changed");
+    //         this._numberOfKills = this._hiscore.kills;
+    //     }
+    // }
 
     get bestHiscore() {
         return this._bestHiscore;

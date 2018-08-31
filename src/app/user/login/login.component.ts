@@ -63,9 +63,9 @@ export class LoginComponent implements OnInit {
               this.user.value.username
             }: ${err.error.message}`;
           } else {
-            this.errorMsg = `Error ${err.status} while trying to login user ${
-              this.user.value.username
-            }: ${err.error}${err}`;
+            this.errorMsg = `Error ${err.status} while trying to login user ${ this.user.value.username }.
+            Please try again with the correct credentials.`;
+             //: ${err.error}${err}
             console.log(err);
           }
         }

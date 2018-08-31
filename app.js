@@ -10,7 +10,10 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 let passport = require('passport');
 
-mongoose.connect(process.env.DATABASE/*, {
+mongoose.connect(
+ // "mongodb://localhost:27017/spacebattle"
+ process.env.DATABASE
+/*, {
   useMongoClient: true
 }*/);
 

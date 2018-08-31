@@ -12,16 +12,19 @@
       <label class="float-right">Email:</label>
     </div>
     <div class="col-4">
-      <input class="form-control" type="text" formControlName='email'>
+      <input class="form-control" type="email" formControlName='email' email>
       <div class='alert alert-danger' *ngIf=' user.get("email").errors?.required && user.get("email").touched'>
         Uw email is verplicht.
       </div>
-      <div class='alert alert-danger' *ngIf=' user.get("email").errors?.email && user.get("email").dirty'>
-        Gelieve een geldig email adres in te vullen.</div>
+      <!-- <div class='alert alert-danger' *ngIf=' user.get("email").errors?.email && user.get("email").dirty'>
+        Gelieve een geldig email adres in te vullen.</div> -->
       <!-- {{user.get("email").length}} > 0 -->
 
       <div class='alert alert-danger' *ngIf='user.get("email").errors?.emailAlreadyExists && user.get("email").touched'>
         A user with that email already exists
+      </div>
+      <div class='alert alert-danger' *ngIf='user.get("email").errors?.wrongInput && user.get("email").touched'>
+        Please fill in a correct email address.
       </div>
     </div>
   </div>

@@ -124,7 +124,7 @@ export class UserInformationComponent implements OnInit {
   prepareFormGroup() {
     this.user = this.fb.group({
       email: [/*this._currentUser ? this._currentUser.email : */'',
-        [Validators.required, Validators.email], this.serverSideValidateEmail()],
+        [Validators.required, Validators.email, this.emailPatternValidator()], this.serverSideValidateEmail()],
       username: [/*this._currentUser ? this._currentUser.username : */'',
         [Validators.required, Validators.minLength(4)], this.serverSideValidateUsername()],
       passwordGroup: this.fb.group({
@@ -251,10 +251,24 @@ export class UserInformationComponent implements OnInit {
     return this.user.get("username").value;
   }
 
+  emailPatternValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } => {
+    const email = control.value;
+    console.log(email);
+    let regexp = new RegExp(
+       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/);
+     //"^[^\s@]+@[^\s@]+\.[^\s@]{2,}$");
+    let correctInput = regexp.test(email);
+    console.log(correctInput);
+    return correctInput ? null : { wrongInput: true };
+  };
+}
+
   serverSideValidateEmail(): ValidatorFn {
     return (control: AbstractControl): Observable<{ [key: string]: any }> => {
       let email = control.value;
       if (this._currentUser != null && this._currentUser.email == email) return Observable.of(null);
+          // if (test) return Observable.of( [true]);
 
       return this.authenticationService
         .checkEmailAvailability(email)

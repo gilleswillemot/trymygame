@@ -19,6 +19,9 @@ import { HiscoreDataService } from '../../hiscores/hiscore-data.service';
 import { Hiscore } from '../models/hiscore.model';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthenticationService } from '../../user/authentication.service';
+import { Observable } from 'rxjs/Observable';
+//import { P5 } from '../../../../p5_scripts';
+
 
 // import * as p5 from 'p5';
 declare var p5: any;
@@ -30,6 +33,7 @@ declare var p5: any;
 })
 export class GameCanvasComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
+        //   if (this._p5Object)
         this._p5Object.remove();
     }
 
@@ -62,15 +66,11 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         setTimeout(() => this.staticAlertClosed = true, 10000);
-
-        let username = "";
-        this._authenticationService.user$.subscribe(item => username = item);
-        this._hiscore = new Hiscore(0, 1, 0, username);
+        this._authenticationService.user$.subscribe(username => this._hiscore = new Hiscore(0, 1, 0, username));
         this._gameOver = false;
         this._bots = [];
         this._shotBullets = [];
         this._timer = 0;
-        this.setGameUp();
         this.besteHiscoreOphalen();
         this._numberOfKills = this._hiscore.kills;
 
@@ -78,13 +78,9 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         this.setDirectionInterval(500);
     }//einde ngOnInit
 
-    // ngOnChanges(changes: SimpleChanges): void {
-    //     const hiscore: SimpleChange = changes["_hiscore"];
-    //     if (!hiscore.isFirstChange()) {
-    //         console.log("11111111EKKEKEKEKEKKEKKEhiscore kills changed");
-    //         this._numberOfKills = this._hiscore.kills;
-    //     }
-    // }
+    get currentUser(): Observable<string> {
+        return this._authenticationService.user$;
+    }
 
     get bestHiscore() {
         return this._bestHiscore;
@@ -105,11 +101,56 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
             if (this._gameOver) this.restart();
             else this.pauseGame();
         } else {
-            this._p5Object.draw = () => this.draw(this._p5Object);
+            this.setGameUp();
+            this._p5Object.draw = () => this.draw(this._p5Object); // overrides draw method from p5 object & therefore starts the GUI.
             this.setTimer();
             this.initiateGameAttributes(this._p5Object);
             this.unfreezeKeys();
             this._gameStarted = true;
+        }
+    }
+
+
+    private setGameUp() {
+        const s = (p) => {
+            // let song;
+            // p.preload = () => {
+            //   console.log('preload');
+            //   song = p.loadSound('assets/music/Thunderstruck.mp3');
+            // }
+
+            p.setup = () => this.setup(p); // override the setup from the p5.
+            //p.draw = () => this.draw(p);
+
+        }
+        // creatie van p5 object vraagt waarschijnlijk een parameter (de setup methode) in de constructor
+        this._p5Object = new p5(s);
+    }
+
+    private setup(p) {
+        let canvas = p.createCanvas(800, 400);
+        // as there is check in the html if ready == true, as long as we haven't successfully subscribed
+        // and set ready to true, we can't set the canvas to the parent element with id "sketch-holder"
+        // as it does not exist yet (it is hidden by the ngIf)
+        console.log(p);
+        canvas.parent('sketch-holder');
+    }
+
+    private initiateGameAttributes(p) {
+        this._weapon = new Weapon("Glock", p.height / 2, p.width / 2, "");
+        console.log("my weapon is a: " + this._weapon.name);
+        this._player = new Player("Gilles", p.width / 2, p.height / 2, 5, 20, 20, 20, "", this._weapon);
+        this._player.loadWeapon(); //fills the player's weapon with bullets.
+
+        for (let i = 0; i < this._numberOfBots; i++) {
+            /*x krijgt een waarde tussen 1 en max breedte -1 en y tussen 1 en max hoogte -1 */
+            let name = "bot" + (i + 1);
+            this._bots[i] = new Bot(
+           /*x*/ Math.floor((Math.random() * (p.width - 1) + 1)),
+           /*y*/ Math.floor((Math.random() * (p.height - 1)) + 1), name, this._directions[i % 4]);
+            let bot = this._bots[i];
+            console.log("New bot has been created.\nHis name is: " + bot.name + "\nHis position is x = "
+                + bot.x + ", y = " + bot.y + "\nHis direction is: " + bot.direction);
         }
     }
 
@@ -148,147 +189,6 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
             this._pauseTimer = this._timer;
             clearInterval(this._timerObject);
             this._gameIsPaused = true;
-        }
-    }
-
-    public gameButtonText() {
-        let buttonText = "";
-        if (!this._gameStarted) {
-            buttonText = "Start";
-        } else if (this._gameOver) buttonText = "Restart";
-        else if (this._gameIsPaused) {
-            buttonText = "Unpause";
-        } else buttonText = "Pause";
-        return buttonText;
-    }
-
-    public numberOfBulletsLeft() {//method to ngFor in html the number of bullets in the weapon
-        return Array(this._weapon.getNumberOfBulletsLeft()).fill(0);
-    }
-
-    get gameStarted() {
-        return this._gameStarted;
-    }
-    /**
-     * Give the number of seconds since game has started
-     * this._timer counts in milliseconds, divided by 1000 gives the seconds.
-     */
-    get timer() {
-        return this._timer / 1000;
-    }
-
-    get mInterval() {
-        return this._mInterval;
-    }
-
-    get dInterval() {
-        return this._dInterval;
-    }
-
-    get weapon() {
-        return this._weapon;
-    }
-
-    get hiscore() {
-        return this._hiscore;
-    }
-
-    get bots() {
-        // console.log("getting the bots.");
-        return this._bots;
-    }
-
-    get numberOfKills() {
-        return this._hiscore.kills;
-    }
-
-    get kills() {
-        let numberOfDeaths: number;
-        if (!this._gameStarted) numberOfDeaths = 0;
-        else numberOfDeaths = this._numberOfBots - this._bots.length;
-        return Array(numberOfDeaths).fill(0);
-    }
-
-    private restart() {
-        //TODO add a html element that show for eg 3 seconds saying that a new round just started.
-        clearInterval(this._moveIntervalTime);
-        console.log(this._moveIntervalTime);//geef tijd in ms uit dit obj
-        clearInterval(this._directionIntervalTimer);
-        this.setDirectionInterval(500);
-        this.setMovebotsInterval(200);
-        this.initiateGameAttributes(this._p5Object);
-        this.unfreezeKeys();
-        console.log("RESTART");
-        if (this._gameOver) {//volledige restart
-            console.log("GAME-OVER restart");
-            //this.setGameUp();
-            this._gameOver = false;
-            this._p5Object.loop();
-            //  this.view.draw();
-        } else clearInterval(this._timerObject);
-        //TODO this.view.redraw() uitproberen
-
-        this._timer = 0;
-        this.setTimer();
-        //clearInterval(this.timer2);
-        this._hiscore.reset();
-    }
-
-    private setTimer() {
-        this._timerObject = setInterval(() => {
-            //print("Bots have moved");
-            this._timer++;
-        }, 1);
-    }
-    private setMovebotsInterval(interval) {
-        this._moveIntervalTime = setInterval(() => {
-            //print("Bots have moved");
-            this.moveBots(this._p5Object);
-        }, this._mInterval = interval);
-    }
-
-    private setDirectionInterval(interval) {
-        this._directionIntervalTimer = setInterval(() => {
-            this.changeDirectionBots();
-        }, this._dInterval = interval)
-    }
-
-    private setGameUp() {
-        const s = (p) => {
-            // let song;
-            // p.preload = () => {
-            //   console.log('preload');
-            //   song = p.loadSound('assets/music/Thunderstruck.mp3');
-            // }
-
-            p.setup = () => this.setup(p);
-            //p.draw = () => this.draw(p);
-
-        }
-        this._p5Object = new p5(s);
-    }
-
-    private setup(p) {
-        let canvas = p.createCanvas(800, 400);
-        //  this.centerCanvas(p);
-        canvas.parent('sketch-holder');
-    }
-
-    private initiateGameAttributes(p) {
-        this._weapon = new Weapon("Glock", p.height / 2, p.width / 2, "");
-        console.log("my weapon is a: " + this._weapon.name);
-        this._player = new Player("Gilles", p.width / 2, p.height / 2, 5, 20, 20, 20, "", this._weapon);
-        this._player.loadWeapon(); //fills the player's weapon with bullets.
-
-        for (let i = 0; i < this._numberOfBots; i++) {
-            /*x krijgt een waarde tussen 1 en max breedte -1 en y tussen 1 en max hoogte -1 */
-            let name = "bot" + (i + 1);
-            this._bots[i] = new Bot(
-           /*x*/ Math.floor((Math.random() * (p.width - 1) + 1)),
-           /*y*/ Math.floor((Math.random() * (p.height - 1)) + 1), name, this._directions[i % 4]);
-            let bot = this._bots[i];
-            console.log("New bot has been created.\nHis name is: " + bot.name + "\nHis position is x = "
-                + bot.x + ", y = " + bot.y + "\nHis direction is: " + bot.direction);
         }
     }
 
@@ -368,16 +268,6 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         for (let i = 0; i < this._bots.length; i++) {
             this._bots[i].show(p);
         }
-    }
-
-    private isGameOver() {
-        if (this._weapon.isEmpty()) {
-            console.log("empty weapon");
-            this._shotBullets = [];
-            this.gameOver();
-            return true;
-        }
-        return false;
     }
 
     private deleteObjectFromArray(array: any[], startIndex, numberOfItemsToDelete: number): void {
@@ -463,10 +353,6 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         }
     }
 
-    shuffle(array) {
-        return array.sort(() => Math.random() - 0.5);
-    }
-
     /**
      * Checks with param p, which is the P5 object that contains all the information of the canvas,
      * if the coördinates x and y are valid/not outside of the canvas.
@@ -507,6 +393,31 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
             return bot.direction; //if bot's position isn't possible going to make it dissapear on the next move.
     }
 
+    private restart() {
+        //TODO add a html element that show for eg 3 seconds saying that a new round just started.
+        clearInterval(this._moveIntervalTime);
+        console.log(this._moveIntervalTime);//geef tijd in ms uit dit obj
+        clearInterval(this._directionIntervalTimer);
+        this.setDirectionInterval(500);
+        this.setMovebotsInterval(200);
+        this.initiateGameAttributes(this._p5Object);
+        this.unfreezeKeys();
+        console.log("RESTART");
+        if (this._gameOver) {//volledige restart
+            console.log("GAME-OVER restart");
+            //this.setGameUp();
+            this._gameOver = false;
+            this._p5Object.loop();
+            //  this.view.draw();
+        } else clearInterval(this._timerObject);
+        //TODO this.view.redraw() uitproberen
+
+        this._timer = 0;
+        this.setTimer();
+        //clearInterval(this.timer2);
+        this._hiscore.reset();
+    }
+
     public shoot(direction?: string) {
         let bullet: Bullet = this._player.shoot();
         bullet.x = this._weapon.x;
@@ -523,4 +434,94 @@ export class GameCanvasComponent implements OnInit, OnDestroy {
         console.log("shot has been fired to direction: " + direction);
     }
 
+    public gameButtonText() {
+        let buttonText = "";
+        if (!this._gameStarted) {
+            buttonText = "Start";
+        } else if (this._gameOver) buttonText = "Restart";
+        else if (this._gameIsPaused) {
+            buttonText = "Unpause";
+        } else buttonText = "Pause";
+        return buttonText;
+    }
+
+    private isGameOver() {
+        if (this._weapon.isEmpty()) {
+            console.log("empty weapon");
+            this._shotBullets = [];
+            this.gameOver();
+            return true;
+        }
+        return false;
+    }
+
+    private setTimer() {
+        this._timerObject = setInterval(() => {
+            //print("Bots have moved");
+            this._timer++;
+        }, 1);
+    }
+    private setMovebotsInterval(interval) {
+        this._moveIntervalTime = setInterval(() => {
+            //print("Bots have moved");
+            this.moveBots(this._p5Object);
+        }, this._mInterval = interval);
+    }
+
+    private setDirectionInterval(interval) {
+        this._directionIntervalTimer = setInterval(() => {
+            this.changeDirectionBots();
+        }, this._dInterval = interval)
+    }
+
+    shuffle(array) {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+    public numberOfBulletsLeft() {//method to ngFor in html the number of bullets in the weapon
+        return Array(this._weapon.getNumberOfBulletsLeft()).fill(0);
+    }
+
+    get gameStarted() {
+        return this._gameStarted;
+    }
+    /**
+     * Give the number of seconds since game has started
+     * this._timer counts in milliseconds, divided by 1000 gives the seconds.
+     */
+    get timer() {
+        return this._timer / 1000;
+    }
+
+    get mInterval() {
+        return this._mInterval;
+    }
+
+    get dInterval() {
+        return this._dInterval;
+    }
+
+    get weapon() {
+        return this._weapon;
+    }
+
+    get hiscore() {
+        return this._hiscore;
+    }
+
+    get bots() {
+        // console.log("getting the bots.");
+        return this._bots;
+    }
+
+    get numberOfKills() {
+        return this._hiscore.kills;
+    }
+
+    get kills() {
+        let numberOfDeaths: number;
+        if (!this._gameStarted) numberOfDeaths = 0;
+        else numberOfDeaths = this._numberOfBots - this._bots.length;
+        return Array(numberOfDeaths).fill(0);
+    }
 }/*Einde component*/

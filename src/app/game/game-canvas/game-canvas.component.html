@@ -40,7 +40,7 @@
   <!--Eventueel Modal van ngbootstrap gebruiken of
     sketch-holder (aka canvas) hiden bij gameOver-->
 
-  <div class="row">
+  <div class="row" > <!--*ngIf="(currentUser | async)"-->
     <div id="game-overlay" class="col-md-3 row" style="margin-bottom: 4%">
       <div class="col-sm-2 col-md-12">
         <b id="testNumberOfKills">Total number of kills: {{numberOfKills}}</b>
@@ -81,4 +81,5 @@
       <!-- Our sketch will go here!, this contains the game canvas! -->
     </div>
   </div>
+  <!-- <p>{{currentUser|async}}</p> -->
 </div>
